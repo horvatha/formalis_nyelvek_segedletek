@@ -17,6 +17,33 @@
 \usepackage{times}
 \usepackage{tikz}
 \usepackage{array} %tabularban math mód
+\usetikzlibrary{arrows}
+\tikzset{ %inner sep = 0.5mm,
+  %minimum size = 5mm,
+  {selected path/.style} ={draw,opacity=.5,line width=3pt,green},
+  {hide path/.style} ={selected path,white,opacity=.9},
+  {base point/.style} ={circle,draw=blue!60,fill=blue!30,inner sep=0},
+  {small point/.style} ={base point, minimum size= 1mm},
+  {middle point/.style} ={base point, minimum size= 3mm},
+  {large point/.style} ={base point, minimum size= 10mm},
+  {future point/.style} ={circle,color=white,draw},
+  point/.style ={circle,draw=black!60,fill=black!20},
+  {new point/.style} ={point,fill=blue!30,draw=blue!60},
+  {edge/.style} ={thick,draw},
+  {new edge/.style} ={draw,thick,-, blue!50},
+  {box/.style}={rectangle,  minimum height=1cm,
+                anchor=south west, draw, rectangle,
+                fill=yellow!20,text centered, text width= 4cm},
+  >=latex,
+  state/.style = {thick, circle, draw, color = black,
+                  fill = red!20, minimum size = 6mm},
+  finalstate/.style = {state, fill=green!20, double},
+  automat/.style = {thick, draw, color = black, fill = #1!12,
+                  minimum size = 10mm},
+  automat/.default = black,
+  point/.style ={circle,draw=blue!60,fill=blue!30,
+                  inner sep=0, minimum size= 1mm},
+ }
 
 \usepackage{mathptm}  % A mathptm a képletekben is times-t használ.
     % Összeakad az amssymbol vagy az amsmath csomaggal (amsfont).
@@ -59,7 +86,7 @@
 \newcommand{\segitseg}{\textbf{Segítség:}\:}
 \newcommand{\megoldas}{\textbf{Megoldás:}\:}
 \usepackage{framed} %leftbar
-\usepackage{a4wide}
+\usepackage[a4paper,margin=1cm,footskip=.5cm]{geometry}
 
 %\newenvironment{feladat}{{\bfseries Feladat:}\:}{}
 %\newenvironment{pelda}{{\bfseries Példa:}\:\par}{}
@@ -90,6 +117,66 @@ size= 1mm}
 \author{Horváth Árpád}
 \maketitle
 
+Nézzük először vázlatosan a félév fontosabb fogalmait!
+
+{Nyelvek, nyelvtanok és automaták kapcsolata általában}
+
+\begin{tikzpicture}[>=latex,yscale=1.5]
+    \node[box,fill=red!20] (nyelv) at (0,0) {\large (formális) nyelv\\
+    \small szavak halmaza\\
+    Például C, Java nyelvek,\\
+    URL-ek nyelve
+    };
+    \node[box] (nyelvtan) at (210:3.5) { 
+    \large nyelvtan\\ \small levezetési szabályok};
+    \node[box] (automata) at (330:3.5) {\large (absztrakt) automata\\ \small állapotgráf};
+    \draw[->] (nyelvtan) edge node[fill=white] {generálja} (nyelv);
+    \draw[->] (automata) edge node[fill=white] {felismeri} (nyelv);
+    \draw[<->] (automata) -- (nyelvtan);
+\end{tikzpicture}
+
+Ezeket a nyelveket majd osztályokba fogjuk sorolni. Például a
+környezetfüggetlen nyelvekhez tartoznak a programozási nyelvek.
+
+{Környezetfüggetlen nyelvek, környezetfüggetlen nyelvtanok ill.
+veremautomaták kapcsolata} 
+
+\begin{tikzpicture}[>=latex]
+    \node[box,fill=red!20] (nyelv) at (0,0) {környezetfüggetlen nyelv\\
+    \small szavak halmaza};
+    \node[box] (nyelvtan) at (210:3.5) {környezetfüggetlen 
+    nyelvtan\\ \small levezetési szabályok};
+    \node[box] (automata) at (330:3.5) {veremautomata\\ \small állapotgráf};
+    \draw[->] (nyelvtan) -- (nyelv);
+    \draw[->] (automata) -- (nyelv);
+    \draw[<->] (automata) -- (nyelvtan);
+\end{tikzpicture}
+
+A környezetfüggetlen nyelvekhez hasonló diagram rajzolható fel a
+környezetérzékeny és az általános nyelvtanok esetén is, csak az automata
+típusa lesz más és más. Sőt a reguláris nyelvtanok esetén is, de ott a
+nyelvnek még egy hasznos megadási módot fogunk tanulni: az úgynevezett
+reguláris kifejezésre illeszkedő szavak is reguláris nyelvet alkotnak.
+
+{Reguláris nyelvek, kifejezések és nyelvtanok ill. véges automaták
+kapcsolata}
+
+\begin{tikzpicture}[>=latex,scale=1.3]
+    \node[box,fill=red!20] (nyelv) at (0,0) {reguláris nyelv\\
+    \small szavak halmaza};
+    \node[box] (kif) at (0,2) {reguláris kifejezés\\ \small tömör leírás};
+    \node[box] (nyelvtan) at (210:3.5) {reguláris
+    nyelvtan\\ \small levezetési szabályok};
+    \node[box] (automata) at (330:3.5) {véges automata\\ \small állapotgráf};
+    \draw[->] (kif) edge node[fill=white] {illeszkedik} (nyelv);
+    \draw[->] (nyelvtan) edge node[fill=white] {generálja} (nyelv);
+    \draw[->] (automata) edge node[fill=white] {felismeri} (nyelv);
+    \draw[<->] (automata) -- (nyelvtan);
+    \draw[->] (kif) edge [bend left] (automata);
+\end{tikzpicture}
+
+\newpage
+
 %\newpage % ++ +++ ++  ++ +++ ++  ++ +++ ++  ++ +++ ++  ++ +++ ++
 \section{Formális nyelvek}
 
@@ -109,6 +196,8 @@ reguláris kifejezés = reguláris halmaz*
 végállapot = elfogadó állapot*
 
 A *-gal jelölteket használja a könyv.
+
+De kezdjük az elején.
 
 \subsection*{Formális nyelvek alapfogalmai és jelölései}
 \begin{definicio} A formális nyelvek alapvető definíciói.
