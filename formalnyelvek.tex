@@ -1069,6 +1069,48 @@ semelyik hozzá tartozó CF nyelvtanban.
 
 Reguláris nyelv lehet-e többértelmű. Milyen alakú a levezetési fája?
 
+A könyvben szereplő nyelvtan levezetési szabályai:
+\begin{equation}
+    E \rightarrow E+T \mid T,\qquad T \rightarrow T*F \mid F,
+    \qquad F \rightarrow (E) \mid a
+    \label{eq:expr_rules}
+\end{equation}
+
+Itt kivételesen nem S-sel jelöltük a kezdőszimbólumot, hanem az angol
+kifejezése kezdőbetüjével, E-vel.
+
+Ezt a nyelvtant a Backus-Naur jelöléssel így írhatnánk.
+
+\vspace{1ex}
+\begin{verbatim}
+expression ::= expression "+" term
+expression ::= term
+term ::= term "*" factor
+term ::= factor
+factor ::= "(" expression ")"
+factor ::= "a"
+\end{verbatim}
+\vspace{1ex}
+
+Vagy tömörebben:
+
+\vspace{1ex}
+\begin{verbatim}
+expression ::= expression "+" term
+             | term
+
+term ::= term "*" factor
+       | factor
+
+factor ::= "(" expression ")"
+         | "a"
+\end{verbatim}
+\vspace{1ex}
+
+Ez egyes elemek jelentése magyarul: expression=kifejezés, term=tag,
+factor=szorzótényező.
+
+
 \subsubsection{A kifejezés nyelvének szűrése}
 
 A nyelvtan a következő levezetési szabályokat tartalmazza:
