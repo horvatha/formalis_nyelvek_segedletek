@@ -1699,6 +1699,10 @@ nyelvet fogadja el:
 \subsection{Feladatok a környezetfüggetlen nyelvekhez és veremautomatákhoz}
 
 \begin{feladat}%{51}
+Először hagyja el azt a 0 vagy több szabályt, amelyek nem férnek bele
+egy környezetfüggetlen nyelvtanba!
+(A tanult szűrések csak környezetfüggetlen nyelvtanokra működnek.)
+
 \[
 S\rightarrow AB;\:\:
 C\rightarrow aE;\:\:
@@ -1721,7 +1725,10 @@ Vezesse le lépésenként a \verb+aaaab+ szót, és rajzolja le a levezetési f�
 
 \vspace{2em}
 \begin{megoldas}
-A Mikulásos általános, az $S\rightarrow AB$ környezetfüggetlen, a többi reguláris.
+A Mikulásos általános, az $S\rightarrow AB$ környezetfüggetlen, a többi
+reguláris. Elég annyit tudni ahhoz, hogy csak környezetfüggetlenbe
+beleférőket tartsuk meg, hogy azok baloldalán egyetlen nemterminális
+(azaz szokásos jelölésünkkel nagybetű) állhat.
 
 $B=\{a,b,A,B,S\}$.
 Alulról szűrés után, és a legvégén is a következőek maradnak meg:
@@ -1847,15 +1854,16 @@ a veremábécéje $\Gamma=$~\spacer.
 Két (teszőlegesen választott) $\delta$ mozgásszabálya\\ \spacer[.95\linewidth].
 
 Határozzuk meg, hogy az alábbi automata felismeri-e végállapottal az
-$\varepsilon$, 0001000 illetve 01 szavakat!
+$\varepsilon$, 0001000, 10 illetve 01 szavakat!
 
 Melyik nyelvet ismeri fel?
 
 \begin{megoldas}
-A 00101, a $\varepsilon$ és a 01 szavakat nem ismeri fel, a 0001000 szót
+A 00101, a $\varepsilon$, 10 és a 01 szavakat nem ismeri fel, a 0001000 szót
 igen.
 
-A $\{0^i10^i \mid i>0\}$ nyelvet ismeri fel ez a veremautomata.
+A $\{0^i10^i \mid i>0\}=\{010, 00100, 0001000, \ldots\}$ nyelvet ismeri
+fel ez a veremautomata végállapottal és üres veremmel is.
 \end{megoldas}
 \end{feladat}
 
@@ -1874,20 +1882,48 @@ végállapot-halmazt, az elemzendő nyelv $\Sigma$ ábécéjét, a $\Gamma$ vere
 \node[state] (q1) at (1,0) {$q_1$};
 \node[state] (q2) at (2,0) {$q_2$};
 \node[finalstate] (q3) at (3,0) {$q_3$};
-\path[thick,->] (q0) edge[bend left=30] node[above] {$a,\:Z/aZ$} (q1)
-                     edge[bend right=30] node[below] {$b,\:Z/bZ$} (q1)
-        (q1) edge node[above] {$a,\:a/\varepsilon$} (q2)
-             edge node[below] {$b,\:b/\varepsilon$} (q2)
-            edge[loop above] node[above] {\parbox{7ex}{$a,\:a/aa$\\$a,\:b/ab$}} ()
-            edge[loop below] node[below] {\parbox{7ex}{$b,\:a/ba$\\$b,\:b/bb$}} ()
+\path[thick,->] (q0) edge[bend left=30] node[above] {$a,\:Z/AZ$} (q1)
+                     edge[bend right=30] node[below] {$b,\:Z/BZ$} (q1)
+        (q1) edge node[above] {$a,\:A/\varepsilon$} (q2)
+             edge node[below] {$b,\:B/\varepsilon$} (q2)
+            edge[loop above] node[above] {\parbox{7ex}{$a,\:A/AA$\\$a,\:B/AB$}} ()
+            edge[loop below] node[below] {\parbox{7ex}{$b,\:A/BA$\\$b,\:B/BB$}} ()
         (q2) edge node[above] {$\varepsilon,\:Z/\varepsilon$} (q3)
             edge[loop above] node[above]
-{$a,\:a/\varepsilon$} ()
+{$a,\:A/\varepsilon$} ()
             edge[loop below] node[below]
-{$b,\:b/\varepsilon$} ()
+{$b,\:B/\varepsilon$} ()
         ;
 \end{tikzpicture}
 \end{feladat}
+
+\paragraph{Megjegyzés} Ha megengedjük, hogy a fenti automatának ne kelljen
+mindig ellenőrizni a verem tetején lévő jelet (a per előtt lehessen
+$\varepsilon$ is), akkor az alábbi egyszerűbb automatát is
+használhatnánk.
+
+\begin{tikzpicture}[scale=2]
+\node[state] (q0) at (0,0) {$q_0$} edge[<-,thick] (-.5,0);
+\node[state] (q1) at (1,0) {$q_1$};
+\node[finalstate] (q2) at (2,0) {$q_2$};
+\path[thick,->] 
+        (q0) edge node[above] {$a,\:A/\varepsilon$} (q1)
+             edge node[below] {$b,\:B/\varepsilon$} (q1)
+            edge[loop above] node[above] {$a,\:\varepsilon/A$} ()
+            edge[loop below] node[below] {$b,\:\varepsilon/B$} ()
+        (q1) edge node[above] {$\varepsilon,\:Z/\varepsilon$} (q2)
+            edge[loop above] node[above] {$a,\:A/\varepsilon$} ()
+            edge[loop below] node[below] {$b,\:B/\varepsilon$} ()
+        ;
+\end{tikzpicture}
+
+Érdemes észrevenni, hogy ez az automata nem determinisztikus. Érdemes
+kipróbálni az $aa$, $aaaa$, $abbbba$ szavakra. Ahányszor két egymásutáni
+ugyanolyan betűhöz ér, a konfigurációsorozat elágazhat. Ami
+érdekes, hogy az általa felismert $\{wcw^{-1} \mid w\in \{a,\:b\}^*\}$
+nyelvhez nem is lehet determinisztikus automatát készíteni. Ellenben a
+véges automatákkal tehát, nem minden nem determinisztikus
+veremautomatához lehet vele ekvivalens determinisztikusat találni.
 
 \begin{feladat}{}
   Adjon meg egy automatát, amely a szabályos zárójelezések nyelvét
@@ -1904,7 +1940,7 @@ Az alábbi nyelvtanból csak azokat a szabályokat hagyjuk meg, amelyek nem
 tartalmaznak felesleges szimbólumokat.
 \[ S\to b,\quad  S\to B,\quad  S\to BC,\quad  C\to cC,\quad  B\to Bb,\quad  B\to b,\quad  C\to DC,\quad  D\to d\]
 
-A keletkezett nyelvtanból határozzuk meg az általa generált nyelv ábécéjét, és a generált nyelvet.
+A megmaradt nyelvtanból határozzuk meg az általa generált nyelv ábécéjét, és a generált nyelvet.
 \end{feladat}
 
 \paragraph{Végeredmény}
@@ -1915,8 +1951,17 @@ megszabadulni, tehát álrekurzív.
 Az megmaradó levezetési szabályok:
 \[ S\to b,\quad  S\to B,\quad  B\to Bb,\quad  B\to b\]
 
+(Zárthelyin és viszgán természetesen le kell írni ilyenkor a szűrés
+teljes folyamatát.)
+
 A generált nyelv ábécéje $\Sigma=\{b\}$. A generált nyelv:
 \[{\cal L} = \{b^i \mid i>0\}=\{b, bb, bbb, bbbb, \ldots\}\]
+
+\paragraph{Megjegyzés}
+Az előbbi nyelvhez egy kevesebb szabályt tartalmazó nyelvtan is
+készíthető:
+
+\[ S\to b,\quad  S\to bS\]
 
 \begin{feladat}{}
   Hozzuk Chomsky-féle normálformára a következő nyelvtant!
@@ -2025,7 +2070,7 @@ Mit mondhatunk a véges fordító kimeneti nyelvéről,
 ha a bemeneti nyelve reguláris nyelvet, illetve környezetfüggetlen
 nyelv?
 
-A szintaxisvezérelt fordítási sémák 2014 tavaszán még nem kellenek.
+A szintaxisvezérelt fordítási sémák 2015 tavaszán még nem kellenek.
 
 Magyarázza el a veremfordító  működését!
 
@@ -2195,7 +2240,7 @@ fogad el, amelyben nem szerepel a 010 szimbólumsorozat.
 \item Készítsen olyan DFA-t, amelyek olyan . és \verb|-| szimbólumokból álló szavakat
 fogad el, amelyben szerepel a \verb|...---...| szimbólumsorozat.
 
-\item Készítsen olyan DFA-t, amelyek olyan . és - szimbólumokból álló szavakat
+\item Készítsen olyan DFA-t, amelyek olyan . és \verb|-| szimbólumokból álló szavakat
 fogad el, amelyben nem szerepel a \verb|...---...| szimbólumsorozat.
 \end{enumerate}
 
@@ -2253,9 +2298,9 @@ fogad el, amelyben nem szerepel a \verb|...---...| szimbólumsorozat.
         műveletet és zárójelet tartalmazó kifejezések (E, T, F
         nemterminálisokat tartalmazó) nyelvtana; levezetési fa; példa
         nem egyértelmű nyelvre
-    \item Programozási nyelvek nyelvtanának megadása Backus-Naur
-        normálalakban; honnan ismerhetőek fel a terminálisok,
-        nemterminálisok
+%    \item Programozási nyelvek nyelvtanának megadása Backus-Naur
+%        normálalakban; honnan ismerhetőek fel a terminálisok,
+%        nemterminálisok
     \item Környezetfüggetlen nyelvtanok jólfésült nyelvtanná alakítása
     \item Környezetfüggetlen nyelvtanok normálalakjai, Chomsky-féle
         normálalakra alakítás, rekurzió, balrekurzió
