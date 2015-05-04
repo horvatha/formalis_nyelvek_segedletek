@@ -1248,7 +1248,7 @@ Van-e olyan algoritmus, amellyel eldönthető,
 
 \subsection{Környezetfüggetlen nyelvtanok átalakítása}
 
-Mikor felesleges terminális ill. nemterminális szimbólum?
+Mikor felesleges egy terminális ill. nemterminális szimbólum?
 
 Alulról felfelé és felülről lefelé átfésülés.
 Melyiknél milyen halmazzal kezdünk? Lényeges-e a sorrend?
@@ -1263,7 +1263,7 @@ bent marad, csak az a jó, ha először szűrök alulról (a terminálisoktól)
 
 Ki kell tudni szűrni felesleges szimbólumokat egy nyelvtanból.
 
-Rekurzív szimbólum.
+Rekurzív nemterminális.
 
 Álrekurzivitás, programozási példa.
 
@@ -1279,9 +1279,10 @@ Mikor rekurzív egy nyelv? Hasznos-e vagy káros a rekurzivitás?
     \qquad \alpha, \beta \in (\Sigma \cup N)^*\]
 \end{definicio}
 
-A fenti definicióban $\Rightarrow^*$ (kissé logikátlanul) azt jelöli,
+A fenti definicióban $\Rightarrow^*$ azt jelöli,
 hogy a jobboldal egy vagy több lépésben levezethető a baloldalból.
-Logikusabb lenne a $\Rightarrow^+$ jelölés.
+(Logikusabb lenne erre a $\Rightarrow^+$ jelölés, de nem írjuk felül a
+szokásos jelölést.)
 
 \begin{pelda}
 Adjunk példát egy programbeli álrekurzióra és egy nyelvtanbelire.
@@ -1318,6 +1319,14 @@ viszont nem lehet megszabadulni.
 \vspace{2em}
 Ha hozzáadnék egy $B\to b$ szabályt, akkor igazi rekurzió lenne a $B\to
 bB$ és nem lenne benne felesleges szimbólum.
+
+\textbf{Figyelem!} A fenti Pythonos példát csak hasonlatnak szántuk. Az,
+hogy egy nyelv tartalmazhat-e rekurziót, és az, hogy a nyelvet leíró
+nyelvtan tartalmaz-e rekurziót, egymástól független dolgok. Majdnem
+minden valamirevaló programnyelv nyelvtanában van rekurzió, másképpen
+csak véges sokféle programot tudnánk létrehozni. A nyelvbeli rekurzió --
+hogy egy függvény hívhatja-e önmagát -- az inkább attól függ, hogy a
+fordító képes-e megküzdeni a rekurzív függvényhívással.
 
 Mikor nem  küszöbölhető ki mindegyik $\varepsilon$-szabály?
 Milyen formában engedjük meg az $\varepsilon$-szabályt olyan nyelv nyelvtanában,
@@ -1367,6 +1376,8 @@ Hogyan alakíthatjuk ilyenné a nyelvtant?
 Milyen alakú átalakításokat tartalmazhat a Greibach-féle normálalak
 (GNF)?
 
+Minden környezetfüggetlen nyelv átalakítható-e CNF illetve GNF formára?
+
 Benne lehet-e az $S\rightarrow \varepsilon$ szabály a normálalakokban?
 
 Gyakran a normálalakok kevésbé áttekinthetőek, mint az eredeti nyelvtan,
@@ -1377,7 +1388,17 @@ fontosabb, mint hogy az ember számára áttekinthető-e.
 
 Mit jelent, hogy egy szimbólum balrekurzív?
 
-Ha egy nyelv rekurzív, meg lehet-e szüntetni a rekurzivitását?
+\begin{definicio}
+    Egy nyelvtan $A$ \emph{nemterminálisát balrekurzívnak} nevezünk, ha egy vagy
+    több lépésben olyan kivejezést tudunk levezetni belőle, amelynek a
+    baloldalán található az $A$ nemterminális.
+
+    \[A \Rightarrow^* A \beta,
+    \qquad \beta \in (\Sigma \cup N)^*\]
+\end{definicio}
+
+Ha egy környezetfüggetlen nyelv rekurzív, meg lehet-e szüntetni a
+rekurzivitását?
 
 Ha egy nyelv balrekurzív, meg lehet-e szüntetni a balrekurzivitását?
 
@@ -1965,7 +1986,7 @@ készíthető:
 
 \begin{feladat}{}
   Hozzuk Chomsky-féle normálformára a következő nyelvtant!
-  Van-e balrekurzió az eredeti, illetve a kapott nyelvtanban?
+  Van-e balrekurzív nemterminális az eredeti, illetve a kapott nyelvtanban?
   Ha igen, hol?
 \[
 S\rightarrow SaSb;\qquad
@@ -1990,7 +2011,8 @@ S\rightarrow \hat A\hat B;\quad
 \hat B\rightarrow b
 \]
 Mind az eredeti nyelvtan, mind a CNF-ben levőben az első levezetési
-szabályban egyetlen lépésben van balrekurzió.
+szabályban van balrekurzív nemterminális. Méghozzá egyetlen lépésben át
+tudjuk alakítani az S-et tartalmazó szavakat, hogy újabb S legyen benne.
 \end{megoldas}
 \end{feladat}
 
