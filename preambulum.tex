@@ -1,0 +1,279 @@
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage{inputenc}
+\usepackage[magyar]{babel}
+\usepackage{ucs}
+\usepackage{tabularx}
+\usepackage{fancyvrb}
+\usepackage{graphicx}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\tikzset{ %inner sep = 0.5mm,
+  %minimum size = 5mm,
+  {selected path/.style} ={draw,opacity=.5,line width=3pt,green},
+  {hide path/.style} ={selected path,white,opacity=.9},
+  {base point/.style} ={circle,draw=blue!60,fill=blue!30,inner sep=0},
+  {small point/.style} ={base point, minimum size= 1mm},
+  {middle point/.style} ={base point, minimum size= 3mm},
+  {large point/.style} ={base point, minimum size= 10mm},
+  {future point/.style} ={circle,color=white,draw},
+  point/.style ={circle,draw=black!60,fill=black!20},
+  {new point/.style} ={point,fill=blue!30,draw=blue!60},
+  {edge/.style} ={thick,draw},
+  {new edge/.style} ={draw,thick,-, blue!50},
+  {box/.style}={rectangle,  minimum height=1cm,
+                anchor=south west, draw, rectangle,
+                fill=yellow!20,text centered, text width= 4cm},
+  >=latex,
+  state/.style = {thick, circle, draw, color = black,
+                  fill = red!20, minimum size = 6mm},
+  finalstate/.style = {state, fill=green!20, double},
+  automat/.style = {thick, draw, color = black, fill = #1!12,
+                  minimum size = 10mm},
+  automat/.default = black,
+  point/.style ={circle,draw=blue!60,fill=blue!30,
+                  inner sep=0, minimum size= 1mm},
+ }
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\newcommand{\film}{
+\begin{tikzpicture}[rotate=90,scale=.6]
+    \draw[fill=black!70] (0,0) -- (0,1) -- (1,1) -- (1,0) -- cycle;
+    \draw[fill=black!30] (0.3,0.1) -- (0.3,.9) -- (.7,.9) -- (.7,.1) -- cycle;
+    \foreach \i in {.15,.35,...,.76}{
+      \draw[fill=white] (0.1,\i) -- (0.1,\i+.1) -- (.2, \i+.1) -- (0.2,\i) -- cycle;
+      \draw[fill=white] (0.8,\i) -- (0.8,\i+.1) -- (.9, \i+.1) -- (0.9,\i) -- cycle;
+      }
+\end{tikzpicture}
+}
+
+
+
+\mode<article>
+{
+  \usepackage{fullpage}
+  \usepackage{pgf}
+  \usepackage[pdftex,colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+  \usepackage{hyperref}
+  \usepackage{fancyvrb}
+  \setjobnamebeamerversion{python.beamer}
+  \newtheorem{definicio}{defin\'ici\'o}
+\newcommand{\lecke}[2][90]{\section{ lecke -- #2}
+
+    Tervezett időtartam #1 perc.
+
+}
+
+\newcommand{\coloruncover}[2]{#2}
+}
+
+\mode<presentation>
+{
+%  \usetheme{Dresden}
+%  \usetheme{Warsaw}
+  \usetheme{Montpellier}
+  \usecolortheme{rose}
+%  \usepackage{beamerthemebars}
+
+%  \setbeamercovered{transparent}
+  %\setbeamertemplate{headline}{}
+  \hypersetup{
+  pdftitle={Horvath Arpad: Bevezetes a halozatok vizsgalataba},
+  unicode
+  }
+  \newtheorem{definicio}{Defin\'ici\'o}
+\newcommand{\lecke}[2][90]{\section{#2}
+
+\begin{frame}
+    {Lecke: #2}
+
+    \vfill
+    Tervezett időtartam #1 perc.
+
+    \vfill
+\end{frame}
+}
+\definecolor{uncovercolor}{rgb}{1,0.8,0.8}
+\newcommand{\coloruncover}[2]{\temporal<#1>{\colorbox{bg}{\phantom{#2}}}{\colorbox{uncovercolor}{\phantom{#2}}}{\colorbox{bg}{#2}}}
+
+}
+
+\newcommand{\oktato}{\textsc{\bfseries\Large\color{green!70!black}PyOkt} }
+
+
+\newcommand{\Smiley}[1]{%
+\begin{tikzpicture}[scale=0.2]
+    \newcommand*{\SmileyRadius}{1.0}%
+    \draw [fill=brown!10] (0,0) circle (\SmileyRadius)% outside circle
+        %node [yshift=-0.22*\SmileyRadius cm] {\tiny #1}% uncomment this to see the smile factor
+        ;  
+
+    \pgfmathsetmacro{\eyeX}{0.5*\SmileyRadius*cos(30)}
+    \pgfmathsetmacro{\eyeY}{0.5*\SmileyRadius*sin(30)}
+    \draw [fill=cyan,draw=none] (\eyeX,\eyeY) circle (0.15cm);
+    \draw [fill=cyan,draw=none] (-\eyeX,\eyeY) circle (0.15cm);
+
+    \pgfmathsetmacro{\xScale}{2*\eyeX/180}
+    \pgfmathsetmacro{\yScale}{1.0*\eyeY}
+    \draw[color=red, domain=-\eyeX:\eyeX]   
+        plot ({\x},{
+            -0.1+#1*0.15 % shift the smiley as smile decreases
+            -#1*1.75*\yScale*(sin((\x+\eyeX)/\xScale))-\eyeY});
+\end{tikzpicture}%
+}%
+
+\newcommand{\utolsooldal}[1][.]{
+\begin{frame}
+    {Gratulálunk!}
+
+    Ezzel a modul leckéit sikeresen teljesítette.
+
+    \vfill
+    Ami még modulzáró feladatként hátra van:\\
+    a modulzáró teszt megoldása#1
+\end{frame}
+}
+%pygments-hez
+\usepackage{fancyvrb}
+\usepackage{color}
+
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\def\PY@tok@gd{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\def\PY@tok@gu{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\def\PY@tok@gt{\def\PY@tc##1{\textcolor[rgb]{0.00,0.25,0.82}{##1}}}
+\def\PY@tok@gs{\let\PY@bf=\textbf}
+\def\PY@tok@gr{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\def\PY@tok@cm{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\def\PY@tok@vg{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\def\PY@tok@m{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\def\PY@tok@mh{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\def\PY@tok@go{\def\PY@tc##1{\textcolor[rgb]{0.50,0.50,0.50}{##1}}}
+\def\PY@tok@ge{\let\PY@it=\textit}
+\def\PY@tok@vc{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\def\PY@tok@il{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\def\PY@tok@cs{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\def\PY@tok@cp{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\def\PY@tok@gi{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\def\PY@tok@gh{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\def\PY@tok@ni{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\def\PY@tok@nl{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\def\PY@tok@nn{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\def\PY@tok@no{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\def\PY@tok@na{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\def\PY@tok@nb{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\def\PY@tok@nc{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\def\PY@tok@nd{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\def\PY@tok@ne{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\def\PY@tok@nf{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\def\PY@tok@si{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\def\PY@tok@s2{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\def\PY@tok@vi{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\def\PY@tok@nt{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\def\PY@tok@nv{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\def\PY@tok@s1{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\def\PY@tok@sh{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\def\PY@tok@sc{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\def\PY@tok@sx{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\def\PY@tok@bp{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\def\PY@tok@c1{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\def\PY@tok@kc{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\def\PY@tok@c{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\def\PY@tok@mf{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\def\PY@tok@err{\def\PY@bc##1{\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{##1}}}
+\def\PY@tok@kd{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\def\PY@tok@ss{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\def\PY@tok@sr{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\def\PY@tok@mo{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\def\PY@tok@kn{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\def\PY@tok@mi{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\def\PY@tok@gp{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\def\PY@tok@o{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\def\PY@tok@kr{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\def\PY@tok@s{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\def\PY@tok@kp{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\def\PY@tok@w{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\def\PY@tok@kt{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\def\PY@tok@ow{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\def\PY@tok@sb{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\def\PY@tok@k{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\def\PY@tok@se{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\def\PY@tok@sd{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+% pygments rész vége
+
+\newcommand{\figs}{{cn_edu/pdf}}
+\newcommand{\deb}{{\em deb}}
+\newcommand{\apt}{{\tt apt}}
+\newcommand{\kin}{$k_{\rm in}$}
+\newcommand{\kout}{$k_{\rm out}$}
+\newcommand{\megoldasjon}{\vfill
+\begin{tikzpicture}
+    \node[draw,thick,green!50!black,circle,inner sep=1] (A) at (0,0) {M};
+\end{tikzpicture}
+{\color{red}Megoldás jön!}
+Lapozás előtt próbálja megoldani a feladatot!}
+
+\newcommand{\modul}[1]{\section{modul -- #1}}
+\newcommand{\modulcel}{\par \textbf{A modul célja:} }
+\newenvironment{feladat}{\par \textbf{Feladat:}}{}
+\newenvironment{kovetelmenyek}{
+    \begin{itemize}\itemsep0pt\parskip0pt}
+    {\end{itemize}}
+
+\newcommand{\kilencven}{\textbf{\color{red}90}}
+
+\author{Horváth Árpád <horvath.arpad@amk.uni-obuda.hu>}
+\subtitle{\"Osszetett h\'al\'ozatok vizsg\'alata}
+\institute[ÓE AMK]{Óbudai Egyetem\\
+  Alba Regia Műszaki Kar (AMK)\\
+  Székesfehérvár}
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Vázlat}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\AtBeginSubsection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Vázlat}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+
+\setbeamertemplate{navigation symbols}{}
+
+\newlength{\maxheight}
+\setlength{\maxheight}{0.63\textwidth}
+
+

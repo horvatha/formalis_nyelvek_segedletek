@@ -1,0 +1,889 @@
+\documentclass[
+    %draft,
+    ignorenonframetext
+    ]{beamer}
+
+\input{preambulum.tex}
+
+\title{Regul\'aris kifejez\'esek}
+\subtitle{}
+\begin{document}
+
+
+\frame{\maketitle}
+
+\begin{frame}<beamer>
+  \frametitle{Vázlat}
+  \tableofcontents
+\end{frame}
+
+\begin{frame}[fragile]
+    {Egy nyelv}{Melyik lehet? Melyikek hibásak? Hogyan ellenőriznénk programmal?}
+
+\begin{verbatim}
+ABC-001
+TRA-548
+AAA-000
+-01
+AAA-
+NEKEM-8
+KISAPA-01
+FERI-12
+KISAPA-0122333
+\end{verbatim}
+\end{frame}
+
+\begin{frame}
+    \noindent
+    \includegraphics[width=.48\linewidth]{rendszamok/nekem-8_reszlet.jpg} 
+    \includegraphics[width=.48\linewidth]{rendszamok/qqriq-7.jpg} 
+
+    \noindent
+    \includegraphics[width=.48\linewidth]{rendszamok/asso-99.png} 
+    \includegraphics[width=.48\linewidth]{rendszamok/siker-1.jpg} 
+\end{frame}
+
+\begin{frame}
+    \noindent
+    \includegraphics[width=.98\linewidth]{rendszamok/jozsi-4.jpg} 
+\end{frame}
+
+\begin{frame}[fragile]
+    {Egy nyelv}
+
+Benne van:
+\begin{verbatim}
+ABC-001
+AAA-000  talán, nem kukacoskodunk :-)
+TRA-548
+FERI-12
+NEKEM-8
+EWING-1
+\end{verbatim}
+
+Nincs benne:
+\begin{verbatim}
+-01
+AAA-
+KISAPA-01
+KISAPA-0122333
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+    {Másik nyelv}{Melyik lehet? Melyikek hibásak? Hogyan ellenőriznénk programmal?}
+
+\begin{verbatim}
+192.168.3.26
+1.5.222.54
+192.168.3.026
+1992.168.3.26
+184..233.45
+011.12.022.03
+560.370.13.25
+\end{verbatim}
+\end{frame}
+
+\frame{\tableofcontents}
+
+\section{Hol alkalmazhatunk reguláris kifejezéseket}
+
+\begin{frame}
+    {Mire jók a reguláris kifejezések}
+
+    A reguláris kifejezések a reguláris nyelvek tömör leírását adják. A
+    reguláris kifejezések egy algoritmussal véges automatává alakítható,
+    ami alapján készíthető olyan program vagy hardvereszköz, amely
+    ellenőrizni tud egy reguláris kifejezést. Ezzel az algoritmussal nem
+    foglalkozunk, (az megtalálható a Bach-könyvben, illetve az átalakítás
+    gyakorlolható a JFLAP programmal).
+
+    \vfill
+    Mi a reguláris kifejezések létrehozásával fogunk foglalkozni. Az
+    ellenőrzést más tárgyakban rábízzuk a programnyelvek kész eszközeire.
+
+    \vfill
+    A programnyelvek és az XML/HTML fájlok környezetfüggetlen nyelvének
+    szintaktikai elemzése kívül esik a reguláris kifejezések hatókörén.
+\end{frame}
+
+\begin{frame}
+    {Reguláris nyelvek, kifejezések és nyelvtanok ill. véges automaták
+    kapcsolata}
+
+    \begin{tikzpicture}[>=latex]
+        \node[box,fill=red!20] (nyelv) at (0,0) {reguláris nyelv};
+        \node[box] (kif) at (0,2) {reguláris kifejezés};
+        \node[box] (nyelvtan) at (210:3.5) {reguláris nyelvtan};
+        \node[box] (automata) at (330:3.5) {véges automata};
+        \draw[->] (kif) -- (nyelv);
+        \draw[->] (nyelvtan) -- (nyelv);
+        \draw[->] (automata) -- (nyelv);
+        \draw[<->] (automata) -- (nyelvtan);
+        \draw[->,very thick] (kif) edge [bend left] (automata);
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+    {Reguláris nyelvek, kifejezések és nyelvtanok ill. véges automaták
+    kapcsolata}
+
+    \begin{tikzpicture}[>=latex]
+        \node[box,fill=red!20] (nyelv) at (0,0) {reguláris nyelv\\
+        \small szavak
+        halmaza};
+        \node[box] (kif) at (0,2) {reguláris kifejezés\\ \small tömör leírás};
+        \node[box] (nyelvtan) at (210:3.5) {reguláris
+        nyelvtan\\ \small levezetési szabályok};
+        \node[box] (automata) at (330:3.5) {véges automata\\ \small állapotgráf};
+        \draw[->] (kif) -- (nyelv);
+        \draw[->] (nyelvtan) -- (nyelv);
+        \draw[->] (automata) -- (nyelv);
+        \draw[<->] (automata) -- (nyelvtan);
+        \draw[->,very thick] (kif) edge [bend left] (automata);
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]
+    {Hol találkozhatunk reguláris kifejezésekkel?}{Programnyelvek}
+
+    Van ahol a programnyelv része:
+
+    \begin{itemize}
+        \item perl, awk
+        \item JavaScript
+    \end{itemize}
+
+    \vfill
+    vagy standard könyvtárában benne van:
+    \begin{itemize}
+        \item C\#
+        \item Python
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+    {És még hol találkozunk regexp-el?}
+
+    (regular expression = regexp)
+
+    \vfill
+    Ezekben kereshetünk /-rel: vim man less
+
+    \vfill
+    Parancsok, amelyekben használható: grep sed
+
+    \vfill
+    A django web-keretrendszer a kapott URL-eket reguláris
+    kifejezésekkel hasonlítja össze, azzal dől el, mit csinál, milyen
+    paraméterekkel.
+\end{frame}
+
+\section{A reguláris kifejezések minimális nyelve}
+
+\begin{frame}
+    Az alábbiakban r, r1, r2 egy-egy érvényes reguláris kifejezést jelent.
+
+    A reguláris kifejezések leírhatóak a következő pár szabály
+    alkalmazásával:
+
+    \vfill
+    \begin{tabular}{rl}
+        r* & r-ből 0-ra vagy többre illeszkedik\\
+        r1|r2 & vagy r1-re, vagy r2-re illeszkedik\\
+        (r) & csoportosítás\\
+        r1r2 & összefűzés\\
+    \end{tabular}
+
+    \vfill
+    Példák:\\
+    \begin{tabular}{rll}
+        kifejezés & illeszkedik erre & nem illeszkedik erre\\
+        \hline
+        ab*a & aa aba abbba & ab*a\\
+        (ab)*a & a aba ababa ababababa & ab*a abab\\
+        (a|A)lma & Alma alma & \\
+        colo(|u)r & color colour& \\
+    \end{tabular}
+\end{frame}
+
+\begin{frame}
+    {Feladat}
+
+    Milyen kifejezés illik az alábbi szavakra? (Soronként egy.)
+
+    \begin{itemize}
+        \item ea ema emma emmma \ldots emmmmmmmma \ldots
+        \item ema emma emmma \ldots emmmmmmmma \ldots,\\
+            de ea nem
+        \item alma1 alma2 alma3 emma1 emma2 emma3
+    \end{itemize}
+
+    A feladatokat követő dián mindig megoldás következik.
+\end{frame}
+
+\begin{frame}
+    {Megoldás}
+
+    Van a leírtaknál több megoldás is.
+
+    \begin{itemize}
+        \item ea ema emma emmma \ldots emmmmmmmma \ldots\\
+            em*a
+        \item ema emma emmma \ldots emmmmmmmma \ldots,\\
+            de ea nem\\
+            emm*a
+        \item alma1 alma2 alma3 emma1 emma2 emma3\\
+            (al|em)ma(1|2|3)\qquad   vagy\\
+            (alma|emma)(1|2|3)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    {Jelölésmódok}
+
+    A Bach Iván könyvben a választás jelölése +. Itt a
+    reguláris kifejezések esetén  gyakorlatban is használt | jelölést
+    használjuk. A többi jelölés egyezik az itteniekkel.
+
+    A reguláris kifejezések gyakorlatában a + jel a *-hoz hasonló, de 1
+    vagy több előfordulást jelöl.
+\end{frame}
+
+\begin{frame}[fragile]
+    {Speciális jelentés levédése}
+
+    A * és \verb"|" jeleknek speciális jeletése van, de néha szükséges, hogy *
+    vagy \verb"|" jelekre illesszünk. Ilyenkor általában a \verb"\" karaktert
+    illesztjük a speciális jeletésű karakter elé, hasonlóan, mint ahogy
+    az újsort jelöljük a karakterláncok esetén (\verb!\n!).
+
+    Az egyes alkalmazások reguláris nyelvei eltérnek attól, hogy a
+    levédett vagy a levédetlen alak jelenti a speciális jelentést. Ezek
+    között az egyik véglet a Python nyelv re modulja, ahol általában a
+    speciális jelentést nem kell levédeni, a másik véglet a Vim és a
+    grep, ahol általában a speciális jelentést kell levédeni.
+\end{frame}
+
+\begin{frame}[fragile]
+    {A speciális jelentések levédése (folyt.)}
+
+
+    A * és a . (pont) jelöléseket egyik esetben sem kell levédeni a
+    speciális jelentéshez (és más általam ismert programnyelvben sem).
+    (A .  tetszőleges karakterre illeszkedik.)  A * és . karakterekre a
+    \verb"\*" és \verb"\." kifejezés illeszkedik. A \verb"\" (visszaper,
+    backslash) karakterre a \verb"\\" reguláris kifejezés illeszkedik.
+
+    Az további példákban a Python jelölésmódját mutatom be, a
+    példamegoldáshoz azt kell tudni, és aszerint kell megoldani a
+    feladatokat.
+
+    A Python nyelvben a csoportosítás zárójelét nem kell levédeni, a
+    \verb"\(" és a \verb"\)" illeszkedik a zárójelekre. Szintén nem kell
+    levédeni a választás függőleges vonalát, tehát a \verb"\|"
+    a \verb"|" karakterre illeszkedik. A további jelek, amelyeket le
+    kell védeni, mert speciális jelentésük van \verb"[]{}+?^$"
+\end{frame}
+
+\begin{frame}[fragile]
+    {Feladat}
+    Hogyan illesztenénk olyan kifejezésre, amely 0 vagy több a-betű után
+    egy *, majd egy vagy több b betű követ?
+
+    \vfill
+    Hogyan illeszthetünk olyan kifejezést, amelynél két bináris számjegy
+    után . (pont) majd egy bináris számjegy következik?
+
+    \megoldasjon
+\end{frame}
+
+\begin{frame}[fragile]
+    {Megoldás}
+    Hogyan illesztenénk olyan kifejezésre, amely 0 vagy több a-betű után
+    egy *, majd egy vagy több b betű követ?\\
+    \verb!a*\*bb*! \quad vagy \quad \verb!a*\*b+!\\
+    utóbbi esetben eltérő lehet, hogy a + elé kell-e \verb|\|.
+
+    \vfill
+    Hogyan illeszthetünk olyan kifejezést, amelynél két bináris számjegy
+    után . (pont) majd egy bináris számjegy következik?\\
+    \verb!(0|1)(0|1)\.(0|1)!
+\end{frame}
+
+\begin{frame}
+    [fragile]{Feladat}
+
+    Melyek illeszkednek az első reguláris kifejezésekre az azt követő
+    szavak közül?
+
+\begin{Verbatim}[commandchars=!\{\}]
+!alert{a.*b}  accb a..b a.*b a**b a...b a*b* A.b
+!alert{a\.*b} a...b a\.b a\..b a\ccb ab a.b
+!alert{a(ab)*b} ab a(ab)))b aab aababb ababab aabababb
+!alert{(0|1|2)*(a|b)*} 0|1|2a|b ab12 (21)(ba)
+              012ab 210ba ab012 012*ab*
+!alert{(|o|O)buda(|i)} buda budai |budai Obuda Obudai
+            (Obudai) (o)buda(i) obuda )buda(i)
+!alert{\((0|1|2),(2|3)\)} 2,3  \(2,2\) (0,1) (0,3 (1,3)
+            ((1),(2)) (13) (2,3) (1,2)
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+    {Megoldások}
+
+    Az egyes sorokból a következőek helyesek csak:
+
+\begin{Verbatim}[commandchars=!\{\}]
+!alert{a.*b}  accb a..b a.*b a**b a...b
+!alert{a\.*b} a...b ab a.b
+!alert{a(ab)*b} ab aababb aabababb
+!alert{(0|1|2)*(a|b)*} 012ab 210ba
+!alert{(|o|O)buda(|i)} buda budai Obuda Obudai obuda
+!alert{\((0|1|2),(2|3)\)} (1,3) (2,3) (1,2)
+\end{Verbatim}
+
+    Zárthelyiben az előzőhöz hasonló kiválasztásos feladatok esetén a
+    helytelenül aláhúzott változatok pontlevonással járnak.
+\end{frame}
+
+\section{A reguláris kifejezések bővített nyelve}
+
+\utolsooldal
+
+
+\begin{frame}[fragile]
+    {Miért kell bővíteni?}
+
+    A reguláris kifejezések leírásához elegendő a kezdetben említett
+    négy lehetőség, mégis sok esetben elég körülményes azokkal felírni
+    azt, amit illeszteni szeretnénk. Az egyik nehézség, amikor \alert{nagy
+    számú karakter valamelyikére}, például tetszőleges betűre, kell
+    illeszkedni, az elég hosszan írható csak le.  Ezért bevezetünk egy
+    betű- vagy számintervallumok megadására is alkalmas jelölést.
+    Például a decimális számjegyeket, a(z ékezet nélküli) nagybetűket,
+    illetve a kisbetűket a következőképpen adhatjuk meg:\\
+    \verb"[0-9]" \quad
+    \verb"[A-Z]" \quad
+    \verb"[a-z]"
+
+    \vfill
+    Egy másik probléma, hogy az \alert{ismétlések számát} nem olyan
+    egyszerű megadni. Hogyan adhatjuk meg azt, hogy a b betű egymás
+    után legalább 2-szer, de maximum 7-szer szerepelhet? Például így:\\
+    \verb"(bb|bbb|bbbb|bbbbb|bbbbbb|bbbbbbb)" \quad vagy így\\
+    \verb"bb(|b|bb|bbb|bbbb|bbbbb)" \quad egyik sem kellemes.
+\end{frame}
+
+\begin{frame}[fragile]
+    {Feladat}
+
+    Vajon hogyan adható meg egy nyolcas számrendszerbeli (oktális)
+    számjegy az intervallumjelöléssel?
+
+    \coloruncover{1}{[0-7]}
+
+    \uncover<2->{Hogyan adható meg egy hexadecimális számjegy? (Egyszerűség
+    kedvéért a betűk nagybetűvel szerepeljenek: A, B, C, D, E, F!)}
+
+    \coloruncover{2}{([0-9]|[A-F])}
+
+    \uncover<3->{ Az intervallumok összevonhatóak egy szögletes zárójelbe
+    szorosan egymás mellé írva: [0-9A-F] }
+\end{frame}
+
+\begin{frame}[fragile]
+    {Karakterhalmazok megadása}
+
+    Az előbbi jelölés tetszőleges karakterhalmazok megadására is alkalmas.
+    Az [c0-3@] kifejezés a c, 0, 1, 2, 3 és @ mindegyikére illeszkedik.
+
+    Ha egy halmaznak $-$ (minusz) jelre is illeszkednie kell, akkor
+    előre rakjuk a $-$ jelet, vagy védjük le.
+
+    \verb![-+03]! \qquad $-$, +, 0 és 3 karakterekre illeszkedik
+
+    \verb![+0\-3]! \qquad ez is
+
+    \verb![+0-3]! \qquad +, 0, 1, 2 és 3 karakterekre illeszkedik
+\end{frame}
+
+\begin{frame}[fragile]
+    {Feladat}
+
+    Egy intézetben két épület van, amelyeket K és F betűvel jelölnek. A
+    termek sorszámozása mindegyik épületben 0-tól 99-ig történik. A
+    termeket a következőképp adják meg K.00 K.01 \ldots K.99, F.00,
+    F.01, \ldots F.99. Írjon reguláris kifejezést, amely mindegyik
+    teremnévre illeszkedik!
+
+    \megoldasjon
+\end{frame}
+
+\begin{frame}[fragile]
+    {Megoldás}
+
+    \verb![FK]\.[0-9][0-9]!
+
+    Halmazjelölés nélkül:
+
+    \verb!(F|K)\.(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)!
+\end{frame}
+
+\begin{frame}[fragile]
+    {Speciális jelölések karakterhalmazokra}
+
+    Néhány speciális halmaz jele látható az alábbi halmazban. Elég az
+    első hármat tudni.
+
+    \vfill
+    \begin{tabular}{rl}
+        . (pont)  & tetszőleges karakterre\\
+        \verb"\d" & decimális karakterek [0-9]\\
+        \verb"\w" & \verb"[0-9a-zA-Z_]"\\
+        \verb"\W" & az előbbi ellentettje\\
+        \verb"\s" & \verb"[ \t\n\r\f\v]"\\
+        \verb"\S" & az előbbi ellentettje\\
+    \end{tabular}
+
+    \vfill
+    A \verb"\w" tehát a változónevekben szereplő karaktereket
+    tartalmazza a \verb"\s" pedig a szóközt, a tabulátort és az újsort
+    is magában foglaló whitespace karaktereket.
+
+    \vfill
+    Ezek halmazon belül is használhatóak, illetve a halmazjelölés
+    szögletes zárójelén belül a pont elveszti speciális jelentését.
+    Emiatt a \verb"[-.\w]+" illeszkedik az
+    \verb"AREK.Uni-Obuda.hu" kifejezésre.
+\end{frame}
+
+\begin{frame}[fragile]
+    {Ismétlések}
+
+    Az alábbi ismétlést jelentő jeleket használhatjuk. $n$ és $m$
+    mindenhol természetes számot jelent.
+
+    \vfill
+    \begin{tabular}{rl}
+        * & 0 vagy több ismétlődés\\
+        + & 1 vagy több ismétlődés\\
+        ? & 0 vagy 1 ismétlődés (van vagy nincs)\\
+        \verb"{n}" & pontosan n ismétlődés\\
+        \verb"{n,m}" & min. n, max. m ismétlődés\\
+        \verb"{,m}" & max. m ismétlődés\\
+        \verb"{n,}" & min. n ismétlődés
+    \end{tabular}
+\end{frame}
+
+\begin{frame}
+    [fragile]{Feladat}
+
+    Melyek illeszkednek az első reguláris kifejezésekre az azt követő
+    szavak közül?
+
+\begin{Verbatim}[commandchars=!()]
+!alert([A-Z]{2}\d{5}) CA12345 12345CA C1B2345 XX111 AA54321
+\end{Verbatim}
+\begin{Verbatim}[commandchars=ABC]
+AalertB(1?\d{2}|2[0-4]\d|25[0-5])C 256 1222 255 00 1?44 244 133
+AalertB(da){2,}dogC dadog da{2,}dog dadadadog dadadog
+\end{Verbatim}
+\begin{Verbatim}[commandchars=!\{\}]
+!alert{[.\w]+}  ... al-Hakim man_page re_howto.pdf index.html
+!alert{b[a-j]+} baba baj b bujj b[a] b[a]+ ba+
+!alert{https?} https? http https httpst httpsa
+!alert{\d+\.\d*[eE]-?\d+} 6.02e23 6e23 1.38E-23 1.2E- .5e2
+      1.E-6 2.333[eE]-?5
+!alert{\(\d+\+\d+\)} (33\+44) (5+6) (4-5) (33++44) (+22) (123+456)
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}
+    [fragile]{Megoldás}
+
+    Csak ezek:
+
+\begin{Verbatim}[commandchars=!()]
+!alert([A-Z]{2}\d{5}) CA12345 AA54321
+\end{Verbatim}
+\begin{Verbatim}[commandchars=ABC]
+AalertB(1?\d{2}|2[0-4]\d|25[0-5])C 255 00 244 133
+AalertB(da){2,}dogC dadadadog dadadog
+\end{Verbatim}
+\begin{Verbatim}[commandchars=!\{\}]
+!alert{[.\w]+}  ... man_page re_howto.pdf index.html
+!alert{b[a-j]+} baba baj
+!alert{https?} http https
+!alert{\d+\.\d*[eE]-?\d+} 6.02e23 1.38E-23 1.E-6
+!alert{\(\d+\+\d+\)} (5+6) (123+456)
+\end{Verbatim}
+
+A második kis hibával a 0 és 255 közötti számokat adja. A kis hiba, hogy
+a 00 01 \ldots 09 formájú számok is vannak közöttük. Kis munkával
+javítható: \verb!([0-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])!
+\end{frame}
+
+\begin{frame}
+    {Feladat}
+
+    Hogyan illeszthetünk a szokásos magyar rendszámokra?
+
+    \vfill
+    Az alábbiak arra jók, hogy lássuk mire lehet/érdemes reguláris
+    kifejezést írni. Ennyire összetett feladat nem lesz számonkéréskor.
+
+    \vfill
+    Próbáljunk egy közelítő reguláris kifejezést készíteni a
+    következőkre:
+    \begin{itemize}
+        \item IP-címek
+        \item e-mailek
+        \item URL-ek
+    \end{itemize}
+
+    \megoldasjon
+\end{frame}
+
+\begin{frame}[fragile]
+    {Megoldások (nem mind)}
+
+    \verb"[A-Z]{3}-[0-9]{3}"
+
+\vfill
+IP-k (több sorban, re.VERBOSE mód)
+\begin{verbatim}
+(
+ (1?\d\d|2[0-4]\d|25[0-5])  \.
+){3}
+(1?\d\d|2[0-4]\d|25[0-5])
+\end{verbatim}
+
+\vfill
+e-mailek (szóközökkel elválasztva, re.VERBOSE mód)
+\begin{verbatim}
+ [-\w.]+   @   ([-\w]+\.)+   (hu|de|uk|...|com|org|...)
+\end{verbatim}
+\end{frame}
+
+\begin{frame}<beamer>
+    {Zárójelpárosítás}
+
+    Lehet-e zárójelpárosításokat ellenőrizni reguláris kifejezésekkel?
+
+    \begin{itemize}[<+->]
+        \item Korlátozott számú kapcsos zárójelet hogyan ellenőrizhetek?
+        \item Korlátlan számú kapcsos zárójelet hogyan ellenőrizhetek?
+        \item Korlátozott számú vegyes zárójelet hogyan ellenőrizhetek?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}<beamer>
+    [fragile]
+    {Zárójelpárosítás}
+
+    Lehet-e zárójelpárosításokat ellenőrizni reguláris kifejezésekkel?
+
+    \begin{itemize}[<+->]
+        \item Korlátozott számú kapcsos zárójelpár:
+            Pl. max 2 darab egymásba ágyazott, azaz \verb"{{}} vagy {}"
+            vagy $\varepsilon$.\\
+            \verb!({({})?})?!   \\
+            (átláthatóság kedvéért a kapcsos zárójelek levédését
+            elhagytam).\\
+            Háromnál sorrendek \verb"{}{}{} {{}{}} {{{}}}"
+        \item Korlátlan számú kapcsos zárójelpár:
+            A zárójelezések nyelve környezetfüggetlen nyelv, nem fér
+            bele a regulárisba $\Rightarrow$ nincs hozzá reguláris
+            kifejezés. \Smiley{-0.51}
+        \item Korlátozott számú vegyes zárójelpár:
+            Nagyon bonyolult. Ismerni kell a lehetséges sorrendeket.
+        \item Veremautomatával egyszerű lesz mindegyik. \Smiley{1}
+    \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}
+    {Az elméleti rész összefoglalója}
+
+    \begin{itemize}[<+->]
+        \item A reguláris kifejezések tömör leírását adják a reguláris nyelveknek.
+        \item Alkalmasak
+            \begin{itemize}
+                \item számunkra érdekes adatok megkeresésére (grep),
+                    cseréjére (sed, vim),
+                \item  hibás alakú adatok kiszűrésére (validálás).
+            \end{itemize}
+        \item Tömör jelölések karakterhalmazokra és
+            ismétlésre. \Smiley{.5}
+        \item Reguláris nyelveket adnak meg $\Rightarrow$ programok
+            szintaktikai elemzésre nem alkalmasak. \Smiley{-.8}
+        \item Zárójelpárosítás ellenőrzésére korlátozottan alkalmas. \Smiley{-.2}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    {Mikkel foglalkoztunk eddig?}{Összetevők és kapcsolatok}
+
+    \uncover<1-5>{Először az ,,összetevők''.}
+    \uncover<6-8>{Mindhárom \emph{egyértelműen} meghatározza a nyelvet. Milyen \alert{igéket} használunk az egyes esetekben?}
+    %\definecolor{uncovercolor}{rgb}{0.8,0.8,1}
+    \begin{tikzpicture}[>=latex]
+	\node[box,fill=blue!20] (nyelv) at (0,0) {\coloruncover{2}{reguláris nyelv}};
+	\node[box] (kif) at (0,2) {\coloruncover{1}{reguláris} kifejezés};
+	\node[box] (nyelvtan) at (210:3.5) {\coloruncover{3}{reguláris nyelvtan}};
+        \node[box] (automata) at (330:3.5) {\coloruncover{5}{det.}\coloruncover{4}{véges automata}};
+	\draw[->] (kif) -- node[left]{\coloruncover{8}{illeszkedik a szavaira}} (nyelv);
+        \draw[->] (nyelvtan) -- node[left]{\coloruncover{6}{generálja}} (nyelv);
+        \draw[->] (automata) -- node[left]{\coloruncover{7}{felismeri}}(nyelv);
+        \draw[<->] (automata) -- (nyelvtan);
+        \draw[->,very thick] (kif) edge [bend left] (automata);
+    \end{tikzpicture}
+
+    \uncover<9>{Nézzünk pár feladatot a véges automaták és reguláris kifejezések kapcsolatára.}
+\end{frame}
+
+\section{Automatás feladatok}
+\begin{frame}
+    {Feladat}
+
+    Milyen reguláris kifejezéssel írható le az alábbi véges automata által
+    felismert nyelv? Írjuk le bővítetlen reguláris kifejezéssel és tömörebben
+    a bővített reguláris kifejezés használatával!
+
+
+\begin{tikzpicture}[scale=2]
+\node[state] (S) at (0,0) {$S$} edge[<-,thick] (-.5,0);
+\node[state] (A) at (1,0) {$A$};
+\node[finalstate] (B) at (2,0) {$B$};
+\path[thick,->] (S) edge node[above] {a} (A)
+                     edge[loop above] node[near end,right] {b} ()
+                (A) edge[loop above] node[near end,right] {a} ()
+                     edge node[above] {b} (B)
+                (B) edge[loop above] node[near end,right] {a}  ()
+                     edge[loop below] node[near end, left] {b}  ();
+\end{tikzpicture}
+
+   Írjuk le a nyelvet halmazjelöléssel is!
+
+   \megoldasjon
+\end{frame}
+
+\begin{frame}
+    {Megoldás}
+
+    b*aa*b(a|b)* \quad vagy \quad b*a+b[ab]*
+
+    Az első megoldás nem használja a bővített nyelvet.
+
+    \[{\cal L} = \{b^ia^jbw \mid i\ge 0, j> 0, w \in \{a,b\}^*\}\]
+\end{frame}
+
+\begin{frame}
+    {Feladat}
+
+    Milyen reguláris kifejezéssel írható le az alábbi véges automata által
+    felismert nyelv? Használhatja a bővített reguláris kifejezést!
+
+\begin{tikzpicture}[scale=2]
+\node[finalstate] (S) at (0,0) {$S$} edge[<-,thick] (-.5,0);
+\node[state] (A) at (1,0) {$A$};
+\node[finalstate] (C) at (2,0) {$C$};
+\node[finalstate] (B) at (1,-1) {$B$};
+\path[thick,->] (S) edge node[above] {a} (A)
+                (A) edge[loop above] node[near end,right] {b} ()
+                     edge node[above] {c} (C)
+                     edge node[right] {b} (B)
+                (C) edge[loop above] node[near end,right] {c}  ();
+\end{tikzpicture}
+
+   Írjuk le a nyelvet halmazjelöléssel is!
+
+   (Létrehozhatja a nyelvtant is, ami ugyanazt a nyelvet generálja,
+   amit az automata felismer.)
+
+   \megoldasjon
+\end{frame}
+
+\begin{frame}
+    {Megoldás}
+
+    (ab+|ab*c+|) \quad esetleg \quad (ab*(b|c*)|)
+
+    Az első változat három függőleges vonallal elválasztott tagból áll:
+    az első tag, amikor a B-be érek, a második, amikor a C-be érek, a
+    harmadik amikor S-ben maradok üres szóval. Ugyanebben a sorrendben
+    szerepelnek az alábbi halmazok, amelyeknek az unióját vesszük.
+
+
+    \[{\cal L} = \{ab^i \mid i>0\} \cup \{ab^ic^j \mid i \ge 0, j>0\}
+    \cup \{\varepsilon\} \]
+\end{frame}
+
+\begin{frame}
+    {Feladat}
+
+    Rajzolja le olyan véges automaták állapotgráfjait, amely az alábbi
+    reguláris kifejezések által megadott nyelvet ismeri fel!
+
+    \begin{itemize}
+        \item ab*c
+        \item 0(12*|1+)
+        \item a(b*c|a+)  ez nehezebb, ilyen nehéz nem lesz.
+    \end{itemize}
+
+    \megoldasjon
+\end{frame}
+
+
+\begin{frame}
+    {Megoldás}
+
+    ab*c legkézenfekvőbb megoldása:
+
+\begin{tikzpicture}[scale=2]
+\node[state] (S) at (0,0) {$S$} edge[<-,thick] (-.5,0);
+\node[state] (A) at (1,0) {$A$};
+\node[finalstate] (B) at (2,0) {$B$};
+\path[thick,->] (S) edge node[above] {a} (A)
+                (A)
+                     edge[loop above] node[right,near end] {b} ()
+                     edge node[above] {c} (B)
+                ;
+\end{tikzpicture}
+
+\vfill
+    0(12*|1+) egy lehetséges megoldása:
+
+\begin{tikzpicture}[scale=2]
+\node[state] (S) at (0,0) {$S$} edge[<-,thick] (-.5,0);
+\node[state] (A) at (1,0) {$A$};
+\node[finalstate] (C) at (2,0) {$C$};
+\node[finalstate] (B) at (1,-1) {$B$};
+\path[thick,->] (S) edge node[above] {0} (A)
+                (A)
+                     edge node[above] {1} (C)
+                     edge node[right] {1} (B)
+                (C) edge[loop below] node[near end,left] {1}  ()
+                (B) edge[loop right] node[right] {2}  ();
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+    {Reguláris kifejezésből véges automata}
+
+    A reguláris kifejezések illesztéséhez nem ötletszerű megoldások, hanem
+    algoritmusok szükségesek. Az, hogy bármely reguláris kifejezés esetén meg
+    tudjuk alkotni a véges automatát, amellyel meg tudjuk vizsgálni az egyes
+    szavakat. \alert{Van erre algoritmus}, de mi nem tanuljuk. (A Bach-könyvben
+    vagy máshol megnézheti, aki akarja, és a JFLAP-pel gyakorolhatja, de
+    számunkra nem szükséges.)
+\end{frame}
+
+
+\section{Gyakorlati tudnivalók}
+
+\begin{frame}
+    {Mihez szükséges?}
+
+    A további gyakorlati tudnivalóak nem szükségesek a Formális nyelvek
+    feladatainak a megoldásához, hasznosak viszont a Linux alkalmazása
+    kurzushoz, mivel a grep és a django használatakor (URL-értelmezés,
+    bevitt adatok ellenőrzése=validálása) is szükséges dolgok vannak
+    hátra. Hasznos továbbá, ha valamikor a Pythonban saját programot
+    szeretnénk írni, ami reguláris kifejezéseket használ.
+\end{frame}
+
+\begin{frame}[fragile]
+    {A sor eleje és vége}
+
+    A sor elejére a \verb"^" (kalap) a végére a \verb"$" karakterek
+    illeszkednek.
+
+    \vfill
+    Ha például a re.search függvénnyel keresünk, akkor az "aba"
+    kifejezés illeszkedni fog az "Alabama" karakterláncra, annak aba
+    részére. A \verb'"^aba"' nem fog illeszkedni rá, de az "abama" és
+    "abakusz" karakterláncra igen. A \verb'"^aba$"' egyedül az "aba"
+    karakterláncra fog illeszkedni.
+
+    \vfill
+    A Formális nyelvek rész feladatai teljes illeszkedést feltételeztek,
+    mintha minden kifejezés elején ott lenne a \verb"^" és a végén a
+    \verb"$". Ez a megszokott mód az elméleti tárgyalások során, például
+    a Bach Iván könyvében is, ha például egy nyelvet reguláris
+    kifejezéssel írunk le.
+\end{frame}
+
+\begin{frame}[fragile]
+    {A nyers karakterláncok és a bő írásmód}
+
+
+    A Python nyelv \alert{re} modulja képes reguláris kifejezéseket kezelni.
+
+    \vfill
+    Ha \alert{r} betűt írunk a karakterlánc elé, a \verb|\| nem
+    viselkedik speciális karakterként $\Rightarrow$ könnyebben írhatunk
+    reguláris kifejezéseket.
+
+    \vfill
+    A re.VERBOSE paraméterrel sorokra bonthatjuk, és megjegyzésekkel
+    láthatjuk el a reguláris kifejezéseket.
+\end{frame}
+
+\begin{frame}
+    [fragile]{Példa az r"" és a re.VERBOSE használatára}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c}{\PYZsh{} r nélkül}
+\PY{n}{re}\PY{o}{.}\PY{n}{search}\PY{p}{(}\PY{l+s}{"}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s}{d+}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s}{.}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s}{d*}\PY{l+s}{"}\PY{p}{,} \PY{l+s}{"}\PY{l+s}{123.6}\PY{l+s}{"}\PY{p}{)}
+
+\PY{c}{\PYZsh{} r-rel}
+\PY{n}{re}\PY{o}{.}\PY{n}{search}\PY{p}{(}\PY{l+s}{r"}\PY{l+s}{\PYZbs{}}\PY{l+s}{d+}\PY{l+s}{\PYZbs{}}\PY{l+s}{.}\PY{l+s}{\PYZbs{}}\PY{l+s}{d*}\PY{l+s}{"}\PY{p}{,} \PY{l+s}{"}\PY{l+s}{123.6}\PY{l+s}{"}\PY{p}{)}
+
+\PY{c}{\PYZsh{} r-rel és re.VERBOSE-zel}
+\PY{n}{re}\PY{o}{.}\PY{n}{search}\PY{p}{(}\PY{l+s}{r"""}
+\PY{l+s}{   }\PY{l+s}{\PYZbs{}}\PY{l+s}{d+      \PYZsh{} egész rész}
+\PY{l+s}{   }\PY{l+s}{\PYZbs{}}\PY{l+s}{.       \PYZsh{} tizedes pont}
+\PY{l+s}{   }\PY{l+s}{\PYZbs{}}\PY{l+s}{d*      \PYZsh{} törtrész}
+\PY{l+s}{"""}\PY{p}{,}
+\PY{l+s}{"}\PY{l+s}{123.6}\PY{l+s}{"}\PY{p}{,}
+\PY{n}{re}\PY{o}{.}\PY{n}{VERBOSE}\PY{p}{)}
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+    {Python és Vim összehasonlítása}
+
+    A speciális jelentést:
+    \begin{itemize}
+        \item egyikben sem kell levédeni:\\
+            . (pont), *, \verb'[] ^ $ \'
+        \item csak Vimben kell levédeni:\\
+            \verb!( ) | { ? +!
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    {Dokumentációk}
+
+    A reguláris kifejezések az itt leírtaknál nagyobb mélységgel
+    rendelkeznek mind a Python nyelvben, mind a Vim szövegszerkesztőben.
+
+    A reguláris kifejezések Pythonbeli használatáról a Python
+    dokumentációk között a Regular Expression HOWTO (a Python HOWTOs
+    részben) és az re modul dokumentációja (a Library Reference részben)
+    ad jó leírást.
+
+    A reguláris kifejezések Vimbeli használatáról a :help regexp
+    parancssal lehet többet megtudni.
+
+    Lásd még: regexp\_vim.txt
+\end{frame}
+
+\end{document}
