@@ -924,11 +924,18 @@ Környezetfüggetlen nyelv.
 
 A Backus--Naur jelölés.
 
+\subsection{Backus--Naur jelölés}
+
+A programozási nyelvek magadásánál a nemterminálisokat és a
+terminálisokat nem egyetlen betűvel szokták jelölni, mivel átláthatatlan
+lenne melyik betű mit jelöl. A nyelvtan megadására a Backus--Naur
+jelölést szokták használni. Ennek több változata elterjedt, először egy
+változatával fogunk megismerkedni, majd az eltéréseket is megbeszéljük.
+
 A nyelvtan megadásának ebben a formájában a nyíl helyett a \verb|::=|
 szimbólumot használjuk, a terminális kifejezéseket idézőjelek határolják a
 nemterminális szimbólumok azok, amelyeket nem idézőjelek határolnak, és egybe
-írottak (az esetleges szóközt aláhúzással helyettesítik). Programozási
-nyelvek megadásánál ezt szokták használni.
+írottak (az esetleges szóközt aláhúzással helyettesítik).
 
 \begin{leftbar}
 \small
@@ -971,13 +978,6 @@ A következő sorban egy Python kifejezés és az értéke látható:
 "+ 1.20++"
 \end{verbatim}
 \end{leftbar}
-
-A Backus--Naur jelölésnek ettől eltérő formái is léteznek. {\small Elterjedt
-még, hogy nem a terminális szimbólumokat teszik idézőjelbe, hanem a nem
-terminális szimbólumokat teszik ,,kacsacsőrös'' zárójelek közé:
-\verb+<értékadó operátor>+. Ilyen szerepel a könyv
-1.3 fejezetében (Miért grammatika a grammatika -- Egy illusztratív
-példa)}
 
 \begin{pelda}
 Írjuk tömörebb formában az alábbi Backus--Naur jelöléssel megadott nyelvtant,
@@ -1041,13 +1041,34 @@ változó&A\\
 f \mid g \}\]
 
 Itt felhasználtuk, hogy az $A\to a$ és $A\to b$ szabályt rövidíthetjük a
-$A\to a|b$ formában. Az utoló szabálycsoport is 5 szabályt foglal
+$A\to a|b$ formában. Az utolsó szabálycsoport is 5 szabályt foglal
 magában.
 
 Az \ref{pl:c}.  példában megnéztük, hogyan lehet levezetni belőle az
 alábbi C nyelvben érvényes értékadó kifejezést.\\
 \verb!a = b *= a!
 \end{pelda}
+
+
+\subsubsection{Más változatok}
+
+A Backus--Naur jelölésnek, mint jeleztük, ettől eltérő formái is
+léteznek. Elterjedt még, hogy nem a terminális szimbólumokat teszik
+idézőjelbe, hanem a nem terminális szimbólumokat teszik ,,kacsacsőrös''
+zárójelek közé: \verb+<értékadó-operátor>+. Vagy a kacsacsőrt és az
+idézőjeleket is használják. Ilyen szerepel a könyv 1.3 fejezetében (Miért
+grammatika a grammatika -- Egy illusztratív példa) vagy a C nyelvtanának
+leírásában az alábbi oldalon\\
+{\small
+\verb+https://cs.wmich.edu/~gupta/teaching/cs4850/sumII06/The syntax of C in Backus-Naur form.htm+
+}\\
+(rövidebben: \verb+https://goo.gl/d71mbi+).
+
+Előfordul, hogy a \verb+::=+ helyett egyszerűen csak kettőspontot használnak. 
+
+% Az ismétlődéseket nem csak rekurzióval szokták megadni, hanem a
+% reguláris kifejezésekhez hasonlóan zárójelbe téve az ismétlődő részt, és
+% utána *-ot rakva jelölik az ismétlődő részt.
 
 
 \subsection{Levezetési fa}
@@ -2158,47 +2179,6 @@ elméletébe} (Handout, 1992.)
 \end{itemize}
 
 \newpage % ++ +++ ++  ++ +++ ++  ++ +++ ++  ++ +++ ++  ++ +++ ++
-%\subsection{Követelményrendszer a \emph{Formális nyelvek és gépek} tárgyhoz}
-%
-%(Eltérés esetén a hivatalos tantárgyi követelményrendszer a mérvadó.)
-%
-%A téma felbontása tantárgyi hetekre:
-%\begin{enumerate}
-%\item Követelményrendszer. Áttekintés: nyelvek,
-%automaták vázlatosan.
-%\item Nyelvek, nyelvtanok, Chomsky-féle nyelvcsaládok
-%\item Nyelvek és automaták. A reguláris nyelvek és a véges
-%(determinisztikus) automaták (DFA)
-%\item 1. zárthelyi. Automaták vizsgálata programmal. Feladatkiosztás.
-%\item Műveletek nyelvekkel. Reguláris kifejezések.
-%\item Feladatbemutatás 1.
-%\item Környezetfüggetlen nyelvek
-%\item Veremautomaták
-%\item Fordítóautomaták
-%\item 2. zárthelyi. Turing-gépek fogalma
-%\item Bonyolultságelmélet. Univerzális Turing-gép.
-%\item Feladatbemutatás 2.
-%\end{enumerate}
-%
-%A félév során két zárthelyi lesz, mely lehet papíron és/vagy Moodle
-%tesztként. Ezek 10-10 pontosak.
-%
-%A félév során mindenki megcsinál egy összetettebb projektszerű
-%feladatot. Ezekre két alkalommal 10 illetve 15, összesen 25 pont
-%kapható.
-%
-%A Turing-gépekkel kapcsolatban egy Moodle-teszt lesz 5 pontért.
-%
-%A félév közben összesen 50 pont érhető el.
-%Az aláíráshoz 25 pont elérése, és a \emph{Tanulmányi és
-%vizsgaszabályzatnak} megfelelő részvételi arány szükséges. Akinek
-%nincsen meg, az a két zárthelyiből javíthat (várhatóan papíron).
-%
-%A vizsgán két tételt húzhat a tananyag első és második feléből.
-%Mindegyik tételhez egy kapcsolódó feladatot is kapnak.
-%
-%NSZHA1SANB 2+0+0 v 2, előkövetelmény Szoftver szigorlat (NSZSS1SANB)
-%%C-s tantervben modulok része
 
 \subsection{2011. tavaszi beadandó feladatok, nappali info}
 
@@ -2331,14 +2311,16 @@ fogad el, amelyben nem szerepel a \verb|...---...| szimbólumsorozat.
     \item Műveletek nyelvekkel (komplemens, unio, metszet, konkatenáció,
         tranzitív lezárt). Milyen nyelv lesz ezek eredménye a reguláris
         nyelvek esetén?
-    \item Reguláris kifejezések
+    \item Reguláris kifejezések: szűk nyelv, halmazok és intervallumok,
+	ismétlések, speciális karakterek, karakterek levédése
     \item Környezetfüggetlen nyelvtanok és nyelvek egyértelműsége; a két
         műveletet és zárójelet tartalmazó kifejezések (E, T, F
         nemterminálisokat tartalmazó) nyelvtana; levezetési fa; példa
         nem egyértelmű nyelvre
-%    \item Programozási nyelvek nyelvtanának megadása Backus-Naur
-%        normálalakban; honnan ismerhetőek fel a terminálisok,
-%        nemterminálisok
+    \item Programozási nyelvek nyelvtanának megadása Backus-Naur
+	normálalakban. Honnan ismerhetőek fel ebben a terminálisok,
+	nemterminálisok (2 változat)? Hogyan írhatóak tömörebben az
+	azonos baloldalú szabályok?
     \item Környezetfüggetlen nyelvtanok jólfésült nyelvtanná alakítása
     \item Környezetfüggetlen nyelvtanok normálalakjai, Chomsky-féle
         normálalakra alakítás, rekurzió, balrekurzió
