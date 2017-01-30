@@ -79,7 +79,7 @@
 \usepackage[magyar]{babel}
 % \usepackage{pslatex}
 \usepackage{indentfirst}
-% \frenchspacing 
+% \frenchspacing
 \usepackage{pxfonts} %mathbb
 \usepackage{html}
 \newcommand{\name}{\textsc}
@@ -127,7 +127,7 @@ Nézzük először vázlatosan a félév fontosabb fogalmait!
     Például C, Java nyelvek,\\
     URL-ek nyelve
     };
-    \node[box] (nyelvtan) at (210:3.5) { 
+    \node[box] (nyelvtan) at (210:3.5) {
     \large nyelvtan\\ \small levezetési szabályok};
     \node[box] (automata) at (330:3.5) {\large (absztrakt) automata\\ \small állapotgráf};
     \draw[->] (nyelvtan) edge node[fill=white] {generálja} (nyelv);
@@ -139,12 +139,12 @@ Ezeket a nyelveket majd osztályokba fogjuk sorolni. Például a
 környezetfüggetlen nyelvekhez tartoznak a programozási nyelvek.
 
 {Környezetfüggetlen nyelvek, környezetfüggetlen nyelvtanok ill.
-veremautomaták kapcsolata} 
+veremautomaták kapcsolata}
 
 \begin{tikzpicture}[>=latex]
     \node[box,fill=red!20] (nyelv) at (0,0) {környezetfüggetlen nyelv\\
     \small szavak halmaza};
-    \node[box] (nyelvtan) at (210:3.5) {környezetfüggetlen 
+    \node[box] (nyelvtan) at (210:3.5) {környezetfüggetlen
     nyelvtan\\ \small levezetési szabályok};
     \node[box] (automata) at (330:3.5) {veremautomata\\ \small állapotgráf};
     \draw[->] (nyelvtan) -- (nyelv);
@@ -213,7 +213,7 @@ szimbólumok vannak benne; hasonló nagybetűkkel ($V, W, X, Y, Z$) pedig
 olyanokat, amelyben csak nemterminálisok; görög betűkkel  ($\alpha$,
 $\beta$, $\omega$) pedig olyanokat, amelyikben bármelyik.)
 \item Szó hossza: a sorozat hossza ($len(\alpha)$) (Az angol
-length=hossz szóból.) 
+length=hossz szóból.)
 \item Üres szó ($\varepsilon$): melyre $len(\varepsilon) = 0$ (Ha a
 szavakra úgy gondolunk, mint a programozási nyelvek sztringjeire, akkor
 a $\varepsilon$ az üres sztringnek, felel meg. Az $\varepsilon$ talán
@@ -242,7 +242,7 @@ betűit fordított sorrendben írom le.
 \item $\Sigma=\{0, 1\}$,\\ ${\cal L}_0(\Sigma) = \emptyset$,
 	${\cal L}_e(\Sigma) = \{\varepsilon \}$,
 	${\cal L}_1(\Sigma) = \{01, 0, \varepsilon \}$,
-	${\cal L}_2(\Sigma) = \{y0y^{-1} \mid y\in \{0; 1\}^*\}$,   
+	${\cal L}_2(\Sigma) = \{y0y^{-1} \mid y\in \{0; 1\}^*\}$,
 \item $\Sigma' = \{ if; then; a; b; c\} \quad {\cal L}_1(\Sigma')=\{\mbox{c; if a then b; if a then
 if b then c}\}$
 \item $01'01010 \in {\cal L}_1(\Sigma){\cal L}_2(\Sigma)$ \quad az ' csak a határt jelöli
@@ -271,7 +271,7 @@ nem terminális és terminális szimbólumok!  Vezessünk le az
 \begin{enumerate}
 \item értékadó\_kifejezés ::= változó értékadó\_operátor értékadó\_kifejezés
 \item értékadó\_kifejezés ::= változó
-\item értékadó\_operátor ::=  \verb|"="| 
+\item értékadó\_operátor ::=  \verb|"="|
 \item értékadó\_operátor ::=  \verb|"*="|
 \item értékadó\_operátor ::=  \verb|"/="|
 \item értékadó\_operátor ::=  \verb|"+="|
@@ -368,6 +368,8 @@ $A \to aB$ vagy $A \to a$ & 3-típusú, reguláris&DFA\\
 \hline
 \end{tabular}
 
+Ezek a nyelv- és nyelvtanosztályok felülről lefelé tartalmazzák egymást.
+
 A környezetfüggetlen nyelvnél nem szoktuk megengedni, hogy a jobboldalt
 üres szó szerepeljen. Így a környzetfüggetlen nyelv nemnövelő lesz, ami
 azt jelenti, hogy a levezetés egyik lépésében sem csökken a szimbólumok
@@ -395,6 +397,8 @@ környezetfüggetlen tényleg részhalmaza az előzőnek.  A
 környezetérzékenyből csak azokat a speciális átalakítási szabályokat
 engedjük itt meg, ahol $\alpha=\beta=\varepsilon$, azaz mindkettő üres
 szó.
+
+%todo ábra
 
 \begin{definicio}
 A nyelvet n-típusúnak nevezünk, ha van olyan n-típusú
@@ -427,7 +431,7 @@ kerüljön. Ilyenkor a felismerés elakad.
 A szó felismerésére először azt az egyszerűbb változatot vizsgáljuk meg,
 amikor minden állapotban minden szalagábécébeli szimbólum esetén
 egyetlen mozgási szabály van. Ilyenkor azt mondjuk, hogy a véges
-automata determinisztikus. 
+automata determinisztikus.
 Determinisztikus véges automata (DFA) esetén akkor mondjuk, hogy egy
 szalagon szereplő szót felismert, ha a szót végig tudta olvasni, és a
 végigolvasás végén végállapotba került.
@@ -466,7 +470,7 @@ Egy véges automata vezérlőművét legszemléletesebben állapotgráffal
 adhatjuk meg, ami egy irányított gráf: nyíl mutat a kezdeti (általában
 $q_0$-lal vagy $S$-el jelölt) állapotra. A nyilakon szereplő szimbólumok
 (a $\Sigma$ szalagábécéből) jelzik, hogy egy adott állapotból azt olvasván a
-szalagról hova jut tovább. A kettős körök jelzik a végállapotokat. 
+szalagról hova jut tovább. A kettős körök jelzik a végállapotokat.
 
 A véges automatákat mi állapotgráffal fogjuk ábrázolni általában. Tudni
 kell azonban, hogy minden állapotgráfhoz 5 dolgot kell tudni, amiknek a
@@ -480,7 +484,7 @@ ez a jelöléséből ($q_0$ vagy $S$) is nyilvánvaló szokott lenni
 kell, melyek a végállapotok ($F$: végállapotok halmaza; állapotgráfon
 dupla karika jelöli).  Gyakran az egész automatának nevet is szoktunk
 adni (pl. $M, M_1, M_2, M'$), ilyenkor az alábbi jelölést használjuk
-$M(Q, \Sigma, \delta, q_0, F)$: 
+$M(Q, \Sigma, \delta, q_0, F)$:
 
 \emph{Nemdeterminisztikus a véges automata} (NFA), ha van olyan állapot,
 amelyből egy terminális szimbólum hatására legalább kétfelé mehetünk
@@ -503,7 +507,7 @@ determinisztikussá.
 Bach 2.2. szakasz, Determinisztikus és nemdeterminisztikus véges
 automaták. A 37. oldalon van egy NFA$\rightarrow$DFA átalakítás, én
 ennél egyszerűbbeket kérdezek, de azt érdemes végigolvasni és megérteni.
- 
+
 \section{Reguláris nyelvek és véges automaták}
 
 Az automaták és a nyelvek között a táblázatban látható kapcsolat van.
@@ -530,7 +534,7 @@ nyelvekhez mindig tartozik azt felismerő véges automata.
 \textbf{Reguláris nyelvtan $\rightarrow$ véges automata átalakítási
 szabályok}
 
-Kell kezdetben egy kezdőállapot 
+Kell kezdetben egy kezdőállapot
 \begin{tikzpicture}[scale=1.5]
 \node[state,fill=white] (S) at (0,0) {$S$} edge[<-,thick] (-.5,0);
 \end{tikzpicture},
@@ -563,7 +567,7 @@ A\rightarrow a
 \end{tikzpicture}
 \\
 
-S\rightarrow \varepsilon 
+S\rightarrow \varepsilon
 &
 \begin{tikzpicture}[scale=1.5]
 \node[finalstate] (S) at (0,0) {$S$} edge[<-,thick] (-.5,0);
@@ -730,9 +734,9 @@ komplemens, unió, metszet, konkatenált, hatvány, tranzitív lezárt.
     \item Nyelvek hatványa:  ${\cal L}^0=\{\varepsilon\},\quad
         {\cal L}^1={\cal L},\quad
         {\cal L}^2= {\cal L}{\cal L},\quad
-        {\cal L}^n={\cal L}^{n-1}{\cal L}$ 
+        {\cal L}^n={\cal L}^{n-1}{\cal L}$
     \item Nyelvek tranzitív lezártja:  ${\cal L}^*={\cal L}^0 \cup{\cal
-        L}^1 \cup{\cal L}^2 \cup{\cal L}^3 \dots$ 
+        L}^1 \cup{\cal L}^2 \cup{\cal L}^3 \dots$
 \end{itemize}
 
 Milyen nyelvek kapunk, ha ezekben a műveletekben reguláris nyelvek a
@@ -909,7 +913,7 @@ Adjunk meg nyelvtant, amely ezt generálja:
 \end{feladat}
 
 \begin{feladat}
-Vajon van-e olyan DFA, amely az előző feladatban szereplő nyelvet ismeri fel? 
+Vajon van-e olyan DFA, amely az előző feladatban szereplő nyelvet ismeri fel?
 \end{feladat}
 
 \section{Tudnivalók és kiegészítések a környezetfüggetlen nyelvekhez}
@@ -1217,7 +1221,7 @@ egyértelműek}.
 
 \begin{definicio}
     \emph{Két nyelvtant ekvivalensnek} nevezünk, ha ugyanazt a nyelvet
-    generálják. 
+    generálják.
 \end{definicio}
 
 Van-e olyan algoritmus, amellyel eldönthető,
@@ -1501,7 +1505,7 @@ A mozgási szabályok esetén megengedjük, hogy egy mozgás során ne kelljen
 mindenképpen vizsgálni a szó következő szimbólumát. Ha nem vizsgáljuk,
 akkor az olvasófej sem lép tovább a következő szimbólumra. Ilyenkor a
 mozgási szabályban a szimbólum helyére az üres szó jelét,
-$\varepsilon$-t írjuk. Például a 
+$\varepsilon$-t írjuk. Például a
 \[\delta(q_1, \varepsilon, X) = (q_2, AX)\]
 mozgási szabály esetén, ha $q_1$-ben vagyok, és $X$ van a verem tetején,
 akkor a szalagon következő betűtől függetlenül tovább mehetek a
@@ -1648,13 +1652,13 @@ Alakítsuk át az alábbi mozgási szabályokat + végállapotokat állapotgráf
 F &= \{q_0\}&&\\
 \end{align*}
 
-Vezessük le konfigurációsorozattal az $aabbb$, 
+Vezessük le konfigurációsorozattal az $aabbb$,
 $aab$, $ab$ szavakat, ha lehet. Ha nem lehet, vezessük le addig, amíg el
 nem akad a levezetés.
 
 Határozzuk meg, hogy determinisztikus-e az automata!
 
-Milyen nyelvet fog felismerni?
+Milyen nyelvet fog felismerni végállapottal?
 
 \textbf{Megoldás:}
 
@@ -1672,12 +1676,12 @@ Milyen nyelvet fog felismerni?
 \end{tikzpicture}
 
 \begin{gather*}
-(aabbb, q_0, Z) \to (abbb,q_1,XZ) \to (bbb,q_1,XXZ)\to\\
-(bb,q_2,XZ) \to (b,q_2,Z) \not \to
+(q_0, aabbb, Z) \to (q_1,abbb,XZ) \to (q_1,bbb,XXZ)\to\\
+(q_2,bb,XZ) \to (q_2,b,Z) \to (q_0,b,\varepsilon) \not \to
 \end{gather*}
 Nem tudjuk végigolvasni az $aabbb$ szót, mert az utolsó szituációra nincs
 szabály, amivel továbbmehetnénk. Az $aabbb$ szó tehát nem szava a fenti
-veremautomata által generált nyelvnek.
+veremautomata által felismert nyelvnek.
 \[aabbb \notin {\cal L} (M)\]
 
 \begin{gather*}
@@ -1687,15 +1691,17 @@ veremautomata által generált nyelvnek.
 
 Sikerült végigolvasni a szót, de nem végállapotba jutottam, és nem is
 tudok átmenni a végállapotba, mert ahhoz a verem tetején $Z$-nek kellene
-lennie. Tehát $aab$ sem eleme az automata által generált nyelvnek.
+lennie. Tehát $aab$ sem eleme az automata által végállapottal felismert
+nyelvnek.
 
 \begin{gather*}
-(ab, q_0, Z) \to (b,q_1,XZ) \to (\varepsilon,q_2,Z) \to
-(\varepsilon,q_0,\varepsilon) 
+(q_0,ab,Z) \to (q_1,b,XZ) \to (q_2,\varepsilon,Z) \to
+(\varepsilon,q_0,\varepsilon)
 \end{gather*}
 
 Sikerült végigolvasni a szót, és végigolvasás után lehetőség van arra,
-hogy a végállapotba átmenjünk. Tehát az automata elfogadta az $ab$ szót.
+hogy a végállapotba átmenjünk. Tehát az automata elfogadta az $ab$ szót
+végállapotbal (mellesleg üres veremmel is).
 \[ab \in {\cal L} (M)\]
 
 Az automata determinisztikus. Bár a végén $\varepsilon$ hatására megy át
@@ -1715,6 +1721,11 @@ veremautomata működése nem tud folytatódni. Tehát az automata az alábbi
 nyelvet fogadja el:
 \[G = \{a^ib^i  \mid i \ge 0\}=\{\varepsilon, ab, aabb, aaabbb, \ldots\}\]
 \end{pelda}
+
+Vegyük észre, hogyha a $q_2$-ből $q_0$-ba menő nyílon visszaraknám a
+$Z$-t a verembe, akkor akár többször is ,,körbe lehetne menni'' az
+automatán, felismerné végállapottal az \verb'abaabbaaabbb' \verb'aabbaabb'
+\verb'abab' \verb'abababab' szavakat is.
 
 
 \subsection{Feladatok a környezetfüggetlen nyelvekhez és veremautomatákhoz}
@@ -1927,7 +1938,7 @@ használhatnánk.
 \node[state] (q0) at (0,0) {$q_0$} edge[<-,thick] (-.5,0);
 \node[state] (q1) at (1,0) {$q_1$};
 \node[finalstate] (q2) at (2,0) {$q_2$};
-\path[thick,->] 
+\path[thick,->]
         (q0) edge node[above] {$a,\:A/\varepsilon$} (q1)
              edge node[below] {$b,\:B/\varepsilon$} (q1)
             edge[loop above] node[above] {$a,\:\varepsilon/A$} ()
@@ -2052,7 +2063,7 @@ a szakirodalom Moore-automatának nevezi. Belátható, hogy mindkét
 fordítócsalád ugyanarra képes: tehát minden Mealy-automatához van olyan
 Moore-automata, amelyek, ha azonos a bemenő szalagon lévő szó, akkor
 ugyanazt írják ki a szalagra, és fordítva; minden Moore-automatához van
-ilyen Mealy-automata. 
+ilyen Mealy-automata.
 
 Milyen változatai vannak a véges fordítóknak? Mi a lényegi különbség a
 működésükben?
@@ -2186,7 +2197,7 @@ elméletébe} (Handout, 1992.)
 %A vizsgán két tételt húzhat a tananyag első és második feléből.
 %Mindegyik tételhez egy kapcsolódó feladatot is kapnak.
 %
-%NSZHA1SANB 2+0+0 v 2, előkövetelmény Szoftver szigorlat (NSZSS1SANB) 
+%NSZHA1SANB 2+0+0 v 2, előkövetelmény Szoftver szigorlat (NSZSS1SANB)
 %%C-s tantervben modulok része
 
 \subsection{2011. tavaszi beadandó feladatok, nappali info}
@@ -2281,7 +2292,7 @@ fogad el, amelyben nem szerepel a \verb|...---...| szimbólumsorozat.
 %Felhasználható ennek a dokumentumnak a forráskódja.
 %
 %A tikz/pgf dokumentációja:\\
-%/usr/share/doc/texmf/pgf/pgfmanual.pdf.gz 
+%/usr/share/doc/texmf/pgf/pgfmanual.pdf.gz
 %
 %\begin{tikzpicture}[scale=1.5]
 %\node[state] (S) at (0,0) {$S$} edge[<-,thick] (-.8,0);
@@ -2299,9 +2310,14 @@ fogad el, amelyben nem szerepel a \verb|...---...| szimbólumsorozat.
 %A generált nyelv az
 %\[{\cal L} = \{ a^ib^j \mid i>3, j\ge 2\}.\]
 
+\newpage
 \section{Tételsor}
 
+\today
+
+
 \begin{enumerate}
+    \Large
     \item Nyelvek, nyelvtanok, automaták kapcsolata. Mit jelent, hogy
         egy nyelvtan generál egy nyelvet, ill. egy automata felismer egy
         nyelvet? Milyen automaták társíthatóak a nyelvosztályokhoz
@@ -2336,7 +2352,8 @@ fogad el, amelyben nem szerepel a \verb|...---...| szimbólumsorozat.
 Csak informatikusoknak:
 
 \begin{enumerate}
-    \setcounter{enumi}{11}
+    \Large
+    \setcounter{enumi}{10}
     \item Milyen algoritmikusan eldönthető és eldönthetetlen problémákat
         ismerünk a formális nyelvekkel kapcsolatban?
     %\item Fordítóautomaták felépítése és működése, típusai, megadása
@@ -2345,6 +2362,58 @@ Csak informatikusoknak:
     %    állapotgráffal, típusai, ekvivalenciájuk.
 \end{enumerate}
 
+
+\newpage
+\section{Feladatok órára}
+\subsection{Normálformák}
+
+\begin{feladat}{}
+    Pipáljuk ki, melyikben lehet ilyen szabály!
+
+    \begin{tabular}{l*{8}{r}}
+	szabály&
+	$A\rightarrow AabB$&
+	$B\rightarrow aABB$&
+	$S\rightarrow BB$&
+	$A\rightarrow a$&
+	$S\rightarrow \varepsilon$&
+	$A\rightarrow \varepsilon$&
+	$A\rightarrow bA$&
+	$B\rightarrow A$\\
+	\hline
+	Jólfésült nyelvtan&&&&&&&&\\
+	Chomsky NF&&&&&&&&\\
+	Greibach NF&&&&&&&&\\
+	\hline
+    \end{tabular}
+\end{feladat}
+
+Összefoglaló a szabályok megengedett alakjairól:\\
+\emph{Chomsky}-normálformában (CNF) $A\rightarrow a$ vagy $A\rightarrow BC$,\\
+\emph{Greibach}-normálformában (GNF) $A\rightarrow aW$, ahol $W \in
+N^{*}$ (azaz W nemterminálisokból álló szó, akár nulla hosszúságú).\\
+Mindkettőben megengedett az $S\rightarrow \varepsilon$ alak, ekkor nem
+szerepelhet az $S$-nek semelyik szabály jobboldalán sem.
+\begin{feladat}{}
+    Balrekurzív-e az alábbi a nyelvtanban az $A$ nemterminális?\\[2em]
+    Alakítsa át az alábbi nyelvtanrészletet Chomsky-normálformára!
+
+    $S\rightarrow AB\quad
+    A\rightarrow BaAa\quad
+    A\rightarrow a\quad
+    B\rightarrow AabAb\quad
+    S\rightarrow \varepsilon$
+
+    1. lépés, jobboldali terminálisok megszüntetése a nem megfelelő
+    alakú szabályokban:\\[10em]
+
+    A 2. lépés (szeletelés) részletezése:\\[15em]
+
+    Az eredeti nyelvtanrészletet helyettesítő összes szabály, amely
+    Chomsky-normálformában van:\\[10em]
+\end{feladat}
+
+\newpage
 
 \newpage
 \tableofcontents
