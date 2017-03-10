@@ -239,13 +239,17 @@ betűit fordított sorrendben írom le.
 \begin{pelda}
   Példák nyelvekre.
 \begin{itemize}
-\item $\Sigma=\{0, 1\}$,\\ ${\cal L}_0(\Sigma) = \emptyset$,
-	${\cal L}_e(\Sigma) = \{\varepsilon \}$,
-	${\cal L}_1(\Sigma) = \{01, 0, \varepsilon \}$,
-	${\cal L}_2(\Sigma) = \{y0y^{-1} \mid y\in \{0; 1\}^*\}$,
-\item $\Sigma' = \{ if; then; a; b; c\} \quad {\cal L}_1(\Sigma')=\{\mbox{c; if a then b; if a then
-if b then c}\}$
-\item $01'01010 \in {\cal L}_1(\Sigma){\cal L}_2(\Sigma)$ \quad az ' csak a határt jelöli
+\item $\Sigma=\{0, 1\}$,\\
+    ${\cal L}_1(\Sigma) = \{01, 0, \varepsilon \}$,\\
+    ${\cal L}_2(\Sigma) = \{0, 1\}^* = \{ \hspace{5em}\}$,
+\item $\Sigma_2=\{a, b, c\}$,\\
+    ${\cal L}_3(\Sigma_2) = \{a^ib^ic^i  \mid i\ge 0\} = \{ \hspace{5em}\}$,\\
+    ${\cal L}_4(\Sigma_2) = \{ycy^{-1} \mid y\in \{a; b\}^*\} = \{ \hspace{5em}\}$,
+\item ${\cal L}_0 = \emptyset$,
+	${\cal L}_e = \{\varepsilon \}$,
+\item $\Sigma_3 = \{ if;\: then;\: a;\: b;\: c\} \quad
+    {\cal L}(\Sigma_3)=\{\mbox{c;\: if a then b;\: if a then if b then c}\}$
+% \item $01'01010 \in {\cal L}_1(\Sigma){\cal L}_2(\Sigma)$ \quad az ' csak a határt jelöli
 \end{itemize}
 \end{pelda}
 
@@ -414,9 +418,12 @@ A reguláris nyelvtanok csak egész speciális formájú átalakításokat
 engednek meg, ahogy a táblázatban látjuk, egy nemterminális szimbólumot
 alakíthatunk egy terminálissá vagy egy terminális utáni nemterminálissá.
 
-A környezetfüggetlen nyelv szoros kapcsolatban van a programozási
-nyelvek nagy részében alapból vagy függvénykönyvtárak segítségével
-elérhető reguláris kifejezésekkel.
+A reguláris nyelv szoros kapcsolatban van a programozási nyelvek nagy
+részében alapból vagy függvénykönyvtárak segítségével elérhető reguláris
+kifejezésekkel.
+
+A \ref{sec:oraifeladat}. fejezetben található feladat a Chomsky-féle
+normálformákba történő besorolásra és szavak levezetésére.
 
 \section{Véges automaták, mint nyelvek felismerői}
 
@@ -2347,6 +2354,65 @@ Csak informatikusoknak:
 
 \newpage
 \section{Feladatok órára}
+\label{sec:oraifeladat}
+
+\subsection{Nyelvek, Chomsky-féle nyelv- és nyelvtanosztályok}
+\begin{feladat}
+Soroljon fel mindegyik nyelvnél 3-3 szót, ami beletartozik a nyelvbe,
+illetve amely szó -- bár a nyelv ábécéjéből tartalmaz csak betűket --
+mégsem tartozik a nyelvhez!
+
+${\cal L}_1 = \{a^ib^ic^i  \mid i\ge 0\}$
+
+eleme: \spacer
+
+nem eleme: \spacer
+
+${\cal L}_2 = \{x2x^{-1} \mid x\in \{0; 1\}^*\}$
+
+eleme: \spacer
+
+nem eleme: \spacer
+\end{feladat}
+
+\begin{feladat}
+Sorolja fel az alábbi nyelvek összes szavát!
+
+${\cal L}_1 = \left\{x^3 \mid x\in \{a; ab\}\right\} = \{ \hspace{15em}  \}$
+
+${\cal L}_2 = \left\{xx \mid x\in \{a; b\}^* \wedge  len(x) \le 2\right\} = \{
+\hspace{15em}  \}$
+
+${\cal L}_3 = \left\{xyxa \mid x\in \{a; b\} \wedge y\in \{ab;
+\varepsilon\}\right\} = \{
+\hspace{15em}  \}$
+\end{feladat}
+
+\begin{feladat}
+Határozza meg egyesével melyik legszűkebb Chomsky-féle nyelvtanosztályba
+férnek bele az alábbi levezetési szabályok!
+\[ S\rightarrow AB;\:\: CEB\rightarrow CBB;\:\:
+A\rightarrow cE;\:\: A\rightarrow aaB;\:\:BB\rightarrow Bc;\:\: 
+C\rightarrow cC;\:\: C\rightarrow c;\]
+\[B\rightarrow b;\:\: S\rightarrow E;\:\: E\rightarrow eE;\:\:  cEB\rightarrow cEe;\:\:  CeB\rightarrow ceB;\:\:
+aBC\rightarrow aaaBC\]
+
+\vspace{3ex}
+A teljes nyelvtan a \spacer[8em] nyelvtanosztályba fér bele.
+
+Vezessük le a következő szavakat a fenti nyelvtannal (a * a zh
+szintjénél nehezebb feladatokat jelöli, nem a szó része):
+\[aabbbb \quad aabc\quad ccbbbb* \quad ccbbc*\]
+
+\vspace{6em}
+
+Levezethető-e valamely szó az alábbi levezetés folytatásaként? Melyik az
+a szó, vagy -- ha nincs ilyen -- miért nem vezethető le?
+\[S\Rightarrow E \Rightarrow \ldots\]
+\end{feladat}
+
+\newpage
+
 \subsection{Normálformák}
 
 \begin{feladat}{}
