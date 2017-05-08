@@ -2413,8 +2413,62 @@ a szó, vagy -- ha nincs ilyen -- miért nem vezethető le?
 
 \newpage
 
-\subsection{Normálformák}
+\subsection{Jólfésült nyelvtan (proper grammar) és a normálformák}
 
+\begin{feladat}
+Alább láthatóak egy nyelvtan levezetési szabályai. Szűrjük ki a
+nyelvtanból a felesleges szimbólumokat!  Határozzuk meg a nyelvtan által
+generált nyelvet!
+
+\[P=\{ S \to AC,\quad A\to aA ,\quad C\to c,\quad S\to cC,\quad C\to
+aBC,\quad
+B\to bE,\quad F\to b,\quad D\to cCb,\quad B\to cF\}\]
+
+
+\paragraph{1. lépés} \spacer szűrés:
+
+$ B_0 = \{\spacer\}$\\[8.59em]
+
+A megmaradt szabályok az 1. lépés után.
+
+\spacer[.95\linewidth]
+
+Az 1. lépés után feleslegesnek bizonyult szimbólum(ok): \spacer.
+
+\paragraph{2. lépés} \spacer szűrés:
+
+$ F_0 = \{\spacer[2em]\}$\\[9em]
+
+Az összes feleslegesnek bizonyult szimbólum: \spacer.
+
+A generált nyelv $\cal L = \{\spacer[12em]\}$! Vezesse le a caccc szót, és rajzolja fel a levezetési fát!
+
+\vfill
+\end{feladat}
+
+\begin{feladat}%{59}
+Egészítse ki az alábbi mondatokat, hogy igazak legyenek!
+
+Egy környezetfüggetlen nyelvtant egyértelműnek nevezünk, ha\\[1ex]
+\spacer[.95\linewidth].
+
+Egy adott környezetfüggetlen nyelvhez találtam több azt generáló
+nyelvtant.  3-ról bebizonyítottam, hogy egyértelmű, 2-ről, hogy
+többértelmű, tehát a nyelvet \spacer nyelvtannak nevezzük.
+
+Példa többértelmű nyelvre $\{\spacer[5em] \mid i,j \ge
+0\}\cup\{\spacer[5em] \mid i,j \ge 0\}$. Ezekben a \spacer alakú szavak
+bármelyik nyelvtana szerint legalább kétféle fával generálhatóak.
+
+A \spacer[5cm] nyelvosztályba tartozó nyelvek mindig egyértelműek.
+
+A felesleges szimbólumok kiszűréséhez a környezetfüggetlen nyelveket
+először \spacer[4cm] (irány) kell szűrni. Az indulási halmaz ($B_0$)
+a levezetési szabályok \spacer{}oldalán szereplő%\\
+\spacer[5cm] szimbólumokat tartalmazza.
+\end{feladat}
+
+\newpage
 \begin{feladat}{}
     Pipáljuk ki, melyikben lehet ilyen szabály!
 
@@ -2434,14 +2488,15 @@ a szó, vagy -- ha nincs ilyen -- miért nem vezethető le?
 	Greibach NF&&&&&&&&\\
 	\hline
     \end{tabular}
-\end{feladat}
 
 Összefoglaló a szabályok megengedett alakjairól:\\
 \emph{Chomsky}-normálformában (CNF) $A\rightarrow a$ vagy $A\rightarrow BC$,\\
 \emph{Greibach}-normálformában (GNF) $A\rightarrow aW$, ahol $W \in
 N^{*}$ (azaz W nemterminálisokból álló szó, akár nulla hosszúságú).\\
 Mindkettőben megengedett az $S\rightarrow \varepsilon$ alak, ekkor nem
-szerepelhet az $S$-nek semelyik szabály jobboldalán sem.
+szerepelhet az $S$ semelyik szabály jobboldalán sem.
+\end{feladat}
+
 \begin{feladat}{}
     Balrekurzív-e az alábbi a nyelvtanban az $A$ nemterminális?\\[2em]
     Alakítsa át az alábbi nyelvtanrészletet Chomsky-normálformára!
@@ -2452,10 +2507,10 @@ szerepelhet az $S$-nek semelyik szabály jobboldalán sem.
     B\rightarrow AabAb\quad
     S\rightarrow \varepsilon$
 
-    1. lépés, jobboldali terminálisok megszüntetése a nem megfelelő
+    \paragraph{1. lépés} jobboldali terminálisok megszüntetése a nem megfelelő
     alakú szabályokban:\\[10em]
 
-    A 2. lépés (szeletelés) részletezése:\\[15em]
+    \textbf{A 2. lépés} (szeletelés) részletezése:\\[15em]
 
     Az eredeti nyelvtanrészletet helyettesítő összes szabály, amely
     Chomsky-normálformában van:\\[10em]
