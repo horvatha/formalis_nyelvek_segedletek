@@ -2306,13 +2306,14 @@ fogad el, amelyben nem szerepel a \verb|...---...| szimbólumsorozat.
 \begin{enumerate}
     \Large
     \item Nyelvek, nyelvtanok, automaták kapcsolata. Mit jelent, hogy
-        egy nyelvtan generál egy nyelvet, ill. egy automata felismer egy
-        nyelvet? Milyen automaták társíthatóak a nyelvosztályokhoz
-        (villamosmérnököknek csak a két legszűkebb nyelvosztályhoz)?
+	egy nyelvtan generál egy nyelvet, ill. egy automata felismer egy
+	nyelvet? Milyen automaták társíthatóak a két legszűkebb
+	nyelvosztályhoz?
     \item Chomsky-féle nyelv- és nyelvtan-osztályok
     \item Véges automaták felépítése, működése, megadásuk
         állapotgráffal, és csoportosításuk (determinisztikusság,
-        teljesség)
+        teljesség), determinisztikussá alakítható-e a
+	nemdeterminisztikus.
     \item Reguláris nyelvek és a véges automaták kapcsolata, egymásba
         alakítása
     \item Műveletek nyelvekkel (komplemens, unio, metszet, konkatenáció,
@@ -2333,16 +2334,16 @@ fogad el, amelyben nem szerepel a \verb|...---...| szimbólumsorozat.
         normálalakra alakítás, rekurzió, balrekurzió
     \item Veremautomaták felépítése és működése, megadása
         állapotgráffal, típusai (végállapottal ill. üres veremmel
-        felismerő), levezetés konfigurációsorozattal
-\end{enumerate}
-
-\hrulefill
-
-Csak informatikusoknak:
-
-\begin{enumerate}
-    \Large
-    \setcounter{enumi}{10}
+        felismerő), levezetés konfigurációsorozattal.
+% \end{enumerate}
+% 
+% \hrulefill
+% 
+% Csak informatikusoknak:
+% 
+% \begin{enumerate}
+%     \Large
+%     \setcounter{enumi}{10}
     \item Milyen algoritmikusan eldönthető és eldönthetetlen problémákat
         ismerünk a formális nyelvekkel kapcsolatban?
     %\item Fordítóautomaták felépítése és működése, típusai, megadása
@@ -2353,9 +2354,146 @@ Csak informatikusoknak:
 
 
 \newpage
-\section{Feladatok órára}
+\section{Feladatok, nyomtatnivalók órára}
 \label{sec:oraifeladat}
 
+\begin{tikzpicture}[>=latex,yscale=1.5]
+    \node[box,fill=red!20] (nyelv) at (0,0) {\large (formális) nyelv\\
+    \small szavak halmaza\\
+    Például C, Java nyelvek,\\
+    URL-ek nyelve
+    };
+    \node[box] (nyelvtan) at (210:3.5) {
+    \large nyelvtan\\ \small levezetési szabályok};
+    \node[box] (automata) at (330:3.5) {\large (absztrakt) automata\\ \small állapotgráf};
+    \draw[->] (nyelvtan) edge node[fill=white] {generálja} (nyelv);
+    \draw[->] (automata) edge node[fill=white] {felismeri} (nyelv);
+    %\draw[<->] (automata) -- (nyelvtan);
+\end{tikzpicture}
+
+
+\subsection{Nyelvtanok és nyelvek típusai (Chomsky-hierarchia)}
+
+A nyelvek típusait a nyelvtanok típusaiból fogjuk származtatni. Először
+tehát ezt vizsgáljuk meg.  Először egy táblázatban összefoglalom a
+nyelvtanok típusait, majd részletesebben kifejtem.
+
+Legyen $\alpha, \beta, \omega \in (\Sigma \cup N)^* \quad A, B \in N
+\quad a \in \Sigma$
+
+\begin{tabular}{|lll|}
+\hline
+szabályok típusa & nyelvtan típusa&automata\\
+\hline
+$\alpha A \beta \to \omega$ & 0-típusú, általános&Turing-gép\\
+$\alpha A \beta \to \alpha\omega\beta$ & 1-típusú, környezetérzékeny&\\
+$A \to \omega$ & 2-típusú, környezetfüggetlen (CF)&PDA\\
+$A \to aB$ vagy $A \to a$ & 3-típusú, reguláris&DFA\\
+\hline
+\end{tabular}
+
+
+\subsection{Reguláris nyelvtan $\rightarrow$ véges automata átalakítási
+szabályok}
+
+Kell kezdetben egy kezdőállapot 
+\begin{tikzpicture}[scale=1.5]
+\node[state,fill=white] (S) at (0,0) {$S$} edge[<-,thick] (-.5,0);
+\end{tikzpicture},
+
+és egy végállapot
+\begin{tikzpicture}[scale=1.5]
+\node[finalstate] (V) at (0,0) {$V$};
+\end{tikzpicture} ahová a $A\rightarrow a$ alakú szabályokat
+vezetjük.\\[2ex]
+
+A további szabályok:
+
+\begin{tabular}{>{$}l<{$}l}
+A\rightarrow aB
+&
+\begin{tikzpicture}[scale=1.5]
+\node[state,fill=white] (A) at (0,0) {$A$};
+\node[state] (B) at (1,0) {$B$};
+\path[thick,->] (A) edge node[above] {a} (B);
+\end{tikzpicture}
+\\
+
+A\rightarrow a
+&
+\begin{tikzpicture}[scale=1.5]
+\node[state,fill=white] (A) at (0,0) {$A$};
+\node[finalstate] (V) at (1,0) {$V$};
+\path[thick,->] (A) edge node[above] {a} (B)
+                ;
+\end{tikzpicture}
+\\
+
+S\rightarrow \varepsilon 
+&
+\begin{tikzpicture}[scale=1.5]
+\node[finalstate] (S) at (0,0) {$S$} edge[<-,thick] (-.5,0);
+\end{tikzpicture}
+\\
+\end{tabular}
+
+
+\noindent
+\textbf{Véges automata $\rightarrow$ reguláris nyelvtan átalakítási
+szabályok}
+
+\begin{tabular}{l>{$}l<{$}}
+\begin{tikzpicture}[scale=1.5]
+\node[state,fill=white] (A) at (0,0) {$A$};
+\node[state] (B) at (1,0) {$B$};
+\path[thick,->] (A) edge node[above] {a} (B);
+\end{tikzpicture}
+& A\rightarrow aB \\
+
+\begin{tikzpicture}[scale=1.5]
+\node[state,fill=white] (A) at (0,0) {$A$};
+\node[finalstate] (B) at (1,0) {$B$};
+\node (C) at (2,0) {};
+\path[thick,->] (A) edge node[above] {a} (B)
+                (B) edge (C);
+\end{tikzpicture}
+& A\rightarrow aB,\quad A\rightarrow a \\
+
+\begin{tikzpicture}[scale=1.5]
+\node[state,fill=white] (A) at (0,0) {$A$};
+\node[finalstate] (B) at (1,0) {$B$};
+\node (C) at (2,0) {};
+\path[thick,->] (A) edge node[above] {a} (B)
+                (B) edge (C);
+\draw (1.4,-.2) -- (1.6,+.2);
+\draw (1.4,+.2) -- (1.6,-.2);
+\end{tikzpicture}
+& A\rightarrow a \\
+
+\begin{tikzpicture}[scale=1.5]
+\node[finalstate] (S) at (0,0) {$S$} edge[<-,thick] (-.5,0);
+\end{tikzpicture}
+& S\rightarrow \varepsilon \\
+\end{tabular}
+
+
+\subsection{Műveletek nyelvekkel}
+
+Ismerni kell a Bach-könyv 2.5. fejezetében szereplő műveleteket:
+komplemens, unió, metszet, konkatenált, hatvány, tranzitív lezárt.
+
+\begin{itemize}
+    \item Nyelvek konkatenációja: ${\cal L}_1{\cal L}_2 =
+        \{xy \mid x \in {\cal L}_1,\: y \in {\cal L}_2\}$
+    \item Nyelvek hatványa:  ${\cal L}^0=\{\varepsilon\},\quad
+        {\cal L}^1={\cal L},\quad
+        {\cal L}^2= {\cal L}{\cal L},\quad
+        {\cal L}^n={\cal L}^{n-1}{\cal L}$ 
+    \item Nyelvek tranzitív lezártja:  ${\cal L}^*={\cal L}^0 \cup{\cal
+        L}^1 \cup{\cal L}^2 \cup{\cal L}^3 \dots$ 
+\end{itemize}
+
+\newpage
 \subsection{Nyelvek, Chomsky-féle nyelv- és nyelvtanosztályok}
 \begin{feladat}
 Soroljon fel mindegyik nyelvnél 3-3 szót, ami beletartozik a nyelvbe,
@@ -2411,6 +2549,206 @@ a szó, vagy -- ha nincs ilyen -- miért nem vezethető le?
 \[S\Rightarrow E \Rightarrow \ldots\]
 \end{feladat}
 
+\newpage
+\subsection{Veremautomaták}
+
+\begin{tikzpicture}[scale=1.5]
+    \begin{scope}[xscale=.65,xshift=-1.52cm]
+        \foreach \i in {0, 1, ..., 5}{
+        \node[automat] (s\i) at (\i,0) {$s_\i$};
+        }
+        \node (S) at (6,0) {$\Sigma$};
+    \end{scope}
+\node[automat] (VM) at (4,-1.6) {veremmemória (LIFO)\:|Z};
+\node (G) at (5.7,-1.6) {$\Gamma$};
+\node[automat=green, double] (VA) at (0,-1.6) {Véges állapotú vezérlőmű};
+\node (G) at (-1,-1) {$Q, q_0, \delta, F$};
+\path[thick, ->] (s2.south) edge[bend right=20] node[right] {Soron következő jel beolvasása} (VA);
+\path[thick, ->] (0,0.6) edge node[above] {Beolvasás iránya} (3.25,0.6);
+\path[thick, <->] (VA) edge node[above] {} (VM);
+\end{tikzpicture}
+
+\vspace{.6em}
+
+\begin{tabular}{|*{2}{l|}}
+\hline
+$\Sigma$ szalagábécé&
+$q_0$ kezdőállapot ($q_0 \in Q$)
+\\
+$\Gamma$ veremábécé &
+$Q$ állapotok
+\\
+$Z$ veremalja jel  ($Z \in \Gamma$)&
+$F$ végállapotok  ($F \subset Q$)\\
+$\delta$ mozgási szabályok&
+\\
+\hline
+\end{tabular}
+
+\vspace{.6em}
+
+
+\begin{tikzpicture}[scale=2.5]
+    \foreach \i in {1,2}{
+    \node[state] (q\i) at (\i,0) {$q_{\i}$};
+    }
+    \path[thick,->] (q1) edge node[above] {$b,\:\:X/\varepsilon$} (q2);
+\end{tikzpicture} \qquad
+\begin{minipage}{.54\linewidth}
+    Ilyenkor POP utasítással leszed a veremről egy
+    X-et, és az üres szót írja rá, azaz semmit. Összességében egy X tűnik el
+    a veremről.
+\end{minipage}
+
+Mozgási szabály: $\delta(\qquad, \qquad, \qquad) = $\\[2em]
+
+\begin{tikzpicture}[scale=2.5, baseline={([yshift=-1.5ex]current bounding box.north)}]
+    \foreach \i in {1,2}{
+    \node[state] (q\i) at (\i,0) {$q_{\i}$};
+    }
+    \path[thick,->] (q1) edge node[above] {$\varepsilon,\:\:X/AX$} (q2);
+\end{tikzpicture} \qquad Ilyenkor nem olvas a szalagról, és nem is lép
+jobbra az olvasófej.
+
+Mozgási szabály: $\delta(\qquad, \qquad, \qquad) = $\\[2em]
+
+\begin{tikzpicture}[scale=2.5, baseline={([yshift=+1.9ex]current bounding box.center)}]
+    \foreach \i in {1,2}{
+    \node[state] (q\i) at (\i,0) {$q_{\i}$};
+    }
+    \path[thick,->] (q1) edge node[above] {$a,\:\:\varepsilon/A$} (q2);
+\end{tikzpicture} \qquad
+\begin{minipage}{.5\linewidth}
+    Ilyenkor nem olvas a veremről (nincs POP utasítás). A Bach-könyv
+    ilyet nem enged meg.
+\end{minipage}
+
+Mozgási szabály: $\delta(\qquad, \qquad, \qquad) = $\\[2em]
+
+\[\delta:
+ Q\times (\Sigma \cup \{\varepsilon\}) \times (\Gamma \cup \{\varepsilon\})
+ \longrightarrow
+ Q \times \Gamma^*.
+\]
+
+Mikor mondjuk, hogy egy szalagra írt szót felismert a veremautomata?
+A veremautomatának \emph{kétféle működési módja} van, azaz
+tulajdonképpen a veremautomatának kétféle definíciója, amelyekben ez a
+feltétel különböző.
+\begin{enumerate}
+    \item A \emph{végállapottal felismerő} veremautomata (a véges
+        automatákhoz hasonlóan) akkor ismeri fel a szót, ha a szó
+        végigolvasásakor végállapotba kerül, vagy további lépésekkel
+        végállapotba tud jutni.
+    \item Az \emph{üres veremmel felismerő} veremautomata akkor ismeri
+        fel a szót, ha a szó végigolvasásakor üres lesz a verem, vagy
+        további lépésekkel ki tudja üríteni a vermet.
+\end{enumerate}
+
+\begin{pelda}
+Alakítsuk át az alábbi mozgási szabályokat + végállapotokat állapotgráffá!
+
+\begin{align*}
+%\delta(q_0, \varepsilon, Z) &= (q_0, \varepsilon)&
+\delta(q_0, a, Z) &= (q_1, XZ)\\
+\delta(q_1, a, X) &= (q_1, XX)&
+\delta(q_1, b, X) &= (q_2, \varepsilon)\\
+\delta(q_2, b, X) &= (q_2, \varepsilon)&
+\delta(q_2, \varepsilon, Z) &= (q_0, \varepsilon)\\
+F &= \{q_0\}&&\\
+\end{align*}
+
+Vezessük le konfigurációsorozattal az $aabbb$, $aab$, $ab$ szavakat
+felismeri-e végállapottal. Ha nem lehet, vezessük le addig, amíg el nem
+akad a levezetés.
+
+Milyen nyelvet fog felismerni végállapottal?
+\end{pelda}
+
+\newpage
+\subsection{Feladatok a környezetfüggetlen nyelvekhez és veremautomatákhoz}
+
+\begin{feladat}{}
+Határozzuk meg, hogy az alábbi automata felismeri-e üres veremmel az
+\verb|abbcbba| illetve \verb+abcab+ szavakat!
+Ha igen vezessük le konfigurációsorozattal!
+
+Melyik nyelvet ismeri fel?
+
+Adjuk meg a $\delta$  mozgásszabályokat, a $Q$ állapothalmazt, az $F$
+végállapot-halmazt, az elemzendő nyelv $\Sigma$ ábécéjét, a $\Gamma$ veremábécét.
+
+\begin{tikzpicture}[scale=2]
+\node[state] (q0) at (1,0) {$q_0$} edge[<-,thick] (.5,0);
+\node[state] (q1) at (2,0) {$q_1$};
+\node[finalstate] (q2) at (3,0) {$q_2$};
+\path[thick,->]
+        (q0) edge node[above] {$c,\:\varepsilon/\varepsilon$} (q1)
+            edge[loop above] node[above] {\parbox{7ex}{$a,\:\varepsilon/a$}} ()
+            edge[loop below] node[below] {\parbox{7ex}{$b,\:\varepsilon/b$}} ()
+        (q1) edge node[above] {$\varepsilon,\:Z/\varepsilon$} (q2)
+            edge[loop above] node[above]
+                {$a,\:a/\varepsilon$} ()
+            edge[loop below] node[below]
+                {$b,\:b/\varepsilon$} ()
+        ;
+\end{tikzpicture}
+\end{feladat}
+
+
+\begin{feladat}{43}
+Szűrje ki az alábbi környezetfüggetlen nyelvtanból a felesleges
+szimbólumokat, és egészítse ki a következő mondatokat!
+
+\vspace{2em}
+\[ S\rightarrow AB;\:\: S\rightarrow E;\:\: A\rightarrow Ce;\:\: C\rightarrow Cc;\:\: C\rightarrow c;\:\: F\rightarrow f;\:\: B\rightarrow b;\:\: E\rightarrow eE\:\: \]
+
+Ha a nyelvtant csak alulról felfele szűrjük, a következő szimbólumok
+maradnak meg:\\
+$B=\left\{\rule{0pt}{1.2em}\hspace{.7\linewidth}\right\}$.
+
+Ha ezután a nyelvtant felülről lefele szűrjük, végül a következő szimbólumok
+maradnak meg:\\
+$T=\left\{\rule{0pt}{1.2em}\hspace{.7\linewidth}\right\}$.
+
+Tehát ezek a szimbólumok bizonyulnak feleslegesnek:\\
+$F=\left\{\rule{0pt}{1.2em}\hspace{.7\linewidth}\right\}$.
+
+A szűrés végén megmaradt levezetési szabályok:\\[1ex]
+$P'=\left\{\rule{0pt}{1.2em}\hspace{.7\linewidth}\right\}$.
+
+Vezesse le lépésenként a ccceb szót, és adja meg a levezetési
+fát!
+\end{feladat}
+\vfill
+
+\begin{feladat}{43}
+Szűrje ki az alábbi környezetfüggetlen nyelvtanból a felesleges
+szimbólumokat, és egészítse ki a következő mondatokat!
+
+\vspace{2em}
+\[ S\rightarrow AC;\:\: S\rightarrow aA;\:\: C\rightarrow
+b;\:\: S\rightarrow bC;\:\: C\rightarrow aS;\:\: C\rightarrow bB;\:\:
+B\rightarrow aE;\:\: E\rightarrow cB;\:\: T\rightarrow dK \]
+
+Ha a nyelvtant csak alulról felfele szűrjük, a következő szimbólumok
+maradnak meg:\\
+$B=\left\{\rule{0pt}{1.2em}\hspace{.7\linewidth}\right\}$.
+
+Ha ezután a nyelvtant felülről lefele szűrjük, végül a következő szimbólumok
+maradnak meg:\\
+$T=\left\{\rule{0pt}{1.2em}\hspace{.7\linewidth}\right\}$.
+
+Tehát ezek a szimbólumok bizonyulnak feleslegesnek:\\
+$F=\left\{\rule{0pt}{1.2em}\hspace{.7\linewidth}\right\}$.
+
+A szűrés végén megmaradt levezetési szabályok:\\[1ex]
+$P'=\left\{\rule{0pt}{1.2em}\hspace{.7\linewidth}\right\}$.
+
+Vezesse le lépésenként a ababb szót, és adja meg a levezetési
+fát!
+\end{feladat}
+\vfill
 \newpage
 
 \subsection{Jólfésült nyelvtan (proper grammar) és a normálformák}
