@@ -81,7 +81,6 @@
 \usepackage{indentfirst}
 % \frenchspacing
 \usepackage{pxfonts} %mathbb
-\usepackage{html}
 \newcommand{\name}{\textsc}
 \newcommand{\segitseg}{\textbf{Segítség:}\:}
 \newcommand{\megoldas}{\textbf{Megoldás:}\:}
@@ -950,7 +949,7 @@ nemterminális szimbólumok azok, amelyeket nem idézőjelek határolnak, és eg
 Az alábbi túlmegy a törzsanyagon, és nem fogom kérdezni, de remélem azért lesz
 aki elolvassa és hasznosnak találja.
 
-\url{http://docs.python.org/library/string.html#formatstrings} Az itt
+\verb+http://docs.python.org/library/string.html#formatstrings+ Az itt
 találhatóak szerint a Pythonban egy érték kiírási formája a következő lehet egy
 sztring objektum format metódusa esetén:
 
@@ -2162,7 +2161,7 @@ hogy mit ír rá (nulla vagy több szimbólum a veremábécéből).
 \newpage
 \section{Tudnivalók az informatikus hallgatók Formális nyelvek
 tantárgyához}
-A segédletek egy része az \url{http://elearning.uni-obuda.hu} oldal
+A segédletek egy része az \verb|http://elearning.uni-obuda.hu| oldal
 \emph{Formális nyelvek} kurzusában található.
 
 \vspace{2ex}
@@ -2529,18 +2528,18 @@ ${\cal L}_3 = \left\{xyxa \mid x\in \{a; b\} \wedge y\in \{ab;
 \begin{feladat}
 Határozza meg egyesével melyik legszűkebb Chomsky-féle nyelvtanosztályba
 férnek bele az alábbi levezetési szabályok!
-\[ S\rightarrow AB;\:\: CEB\rightarrow CBB;\:\:
-A\rightarrow cE;\:\: A\rightarrow aaB;\:\:BB\rightarrow Bc;\:\: 
-C\rightarrow cC;\:\: C\rightarrow c;\]
-\[B\rightarrow b;\:\: S\rightarrow E;\:\: E\rightarrow eE;\:\:  cEB\rightarrow cEe;\:\:  CeB\rightarrow ceB;\:\:
-aBC\rightarrow aaaBC\]
+\[ {}^{1.} S\rightarrow AB;\:\: {}^{2.} CEB\rightarrow CBB;\:\:
+{}^{3.} A\rightarrow cE;\:\: {}^{4.} A\rightarrow aaB;\:\: {}^{5.} BB\rightarrow Bc;\:\: 
+{}^{6.} C\rightarrow cC;\:\: {}^{7.} C\rightarrow c;\]
+\[{}^{8.} B\rightarrow bB;\:\: {}^{9.} B\rightarrow b;\:\: {}^{10.} S\rightarrow E;\:\:
+{}^{11.} E\rightarrow eE;\:\:  {}^{12.} cEB\rightarrow cEe;\:\:  {}^{13.} CeB\rightarrow ceB;\:\:
+{}^{14.} aBC\rightarrow aaaBC\]
 
 \vspace{3ex}
 A teljes nyelvtan a \spacer[8em] nyelvtanosztályba fér bele.
 
-Vezessük le a következő szavakat a fenti nyelvtannal (a * a zh
-szintjénél nehezebb feladatokat jelöli, nem a szó része):
-\[aabbbb \quad aabc\quad ccbbbb* \quad ccbbc*\]
+Vezessük le a következő szavakat a fenti nyelvtannal:
+\[aabbbb \quad aabc\]
 
 \vspace{6em}
 
